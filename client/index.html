@@ -6,11 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Explore the galaxy and build your mining empire in AstroMiner. Mine valuable resources, trade with other players, become a space tycoon.">
     <meta name="author" content="Aleksander Czerwionka, Konrad Bryłowski, Michał Krause">
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/main.css">
+    <script src="js/pixi.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/ui.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/index.js"></script>
 </head>
 <body>
-
+    <div id="ui-container">
+        <div id="landing-section">
+            <div class="title">
+                <h1>AstroMiner</h1>
+                <h2>Mining The Stars</h2>
+            </div>
+            <div id="connect-popup" class="popup">
+                <div id="connect-popup-content">
+                    <div id="connect-popup-title" class="popup-title">Connect to server</div>
+                    <input id="connect-popup-input" class="popup-input" type="text" placeholder="Server address">
+                    <button id="connect-popup-button" class="popup-button" onclick="connect()">Connect</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="canvas-container"></div>
 </body>
 </html>
