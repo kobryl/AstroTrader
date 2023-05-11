@@ -79,12 +79,13 @@ import json
 import queue
 
 import websockets
+import websockets.exceptions
 
 from game import Game
 
-connected_clients = set()               # a set of connected clients
-game = Game()                           # the game object
-messages = queue.Queue()                # a queue of messages received from clients
+connected_clients = set()  # a set of connected clients
+game = Game()  # the game object
+messages = queue.Queue()  # a queue of messages received from clients
 
 
 async def error(websocket, message):
@@ -92,11 +93,8 @@ async def error(websocket, message):
 
 
 async def sendGameState(websocket):
-    game_state = {
-
-    }
+    game_state = game.getState()
     await websocket.send(json.dumps(game_state))
-    raise NotImplementedError
 
 
 async def play(websocket, clients: set):
@@ -115,20 +113,11 @@ async def play(websocket, clients: set):
         else:
             await error(websocket, "Unknown event type")
         if update_flag:
-            update_event = {
-                "type": "update",
-                "content": {
-                    "stations": {
-
-                    },
-                    "players": {
-
-                    }
-                }
-            }
+            update_event = game.sendUpdates()
             websockets.broadcast(clients, json.dumps(update_event))
             update_flag = False
             raise NotImplementedError
+        raise NotImplementedError
 
 
 async def join(websocket, clients: set):
@@ -137,7 +126,10 @@ async def join(websocket, clients: set):
         await sendGameState(websocket)
         await play(websocket, clients)
     finally:
-        clients.remove(websocket)
+        try:
+            await websocket.close()
+        finally:
+            clients.remove(websocket)
 
 
 async def handler(websocket):
@@ -145,7 +137,7 @@ async def handler(websocket):
     print(message)
     event = json.loads(message)
     assert event["type"] == "init"
-    game.players.append(event["content"]["name"])
+    game.addPlayer(event["content"]["name"])
     await join(websocket, connected_clients)
 
 
