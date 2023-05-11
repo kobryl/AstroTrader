@@ -115,17 +115,7 @@ async def play(websocket, clients: set):
         else:
             await error(websocket, "Unknown event type")
         if update_flag:
-            update_event = {
-                "type": "update",
-                "content": {
-                    "stations": {
-
-                    },
-                    "players": {
-
-                    }
-                }
-            }
+            update_event = game.sendUpdates()
             websockets.broadcast(clients, json.dumps(update_event))
             update_flag = False
             raise NotImplementedError
