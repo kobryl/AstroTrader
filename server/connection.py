@@ -1,26 +1,33 @@
 import asyncio
 import json
+import queue
+
 import websockets
 
 from game import Game
 
-CONNECTED_CLIENTS = set()
-GAME = Game()
-UPDATE_FLAG = False
+connected_clients = set()               # a set of connected clients
+game = Game()                           # the game object
+messages = queue.Queue()                # a queue of messages received from clients
 
 
 async def error(websocket, message):
     await websocket.send(json.dumps({"type": "error", "message": message}))
 
 
-async def sendGameState(websocket, game: Game):
-    await websocket.send(json.dumps({}))
+async def sendGameState(websocket):
+    game_state = {
+
+    }
+    await websocket.send(json.dumps(game_state))
     raise NotImplementedError
 
 
-async def play(websocket, connected_clients: set, game: Game):
+async def play(websocket, clients: set):
+    update_flag = False
     async for message in websocket:
         event = json.loads(message)
+        messages.put((websocket, event))
         if event["type"] == "move":
             raise NotImplementedError
         elif event["type"] == "buy":
@@ -31,21 +38,30 @@ async def play(websocket, connected_clients: set, game: Game):
             raise NotImplementedError
         else:
             await error(websocket, "Unknown event type")
-        if UPDATE_FLAG:
+        if update_flag:
             update_event = {
+                "type": "update",
+                "content": {
+                    "stations": {
 
+                    },
+                    "players": {
+
+                    }
+                }
             }
-            websockets.broadcast(connected_clients, json.dumps(update_event))
+            websockets.broadcast(clients, json.dumps(update_event))
+            update_flag = False
             raise NotImplementedError
 
 
-async def join(websocket, connected_clients: set, game: Game):
-    connected_clients.add(websocket)
+async def join(websocket, clients: set):
+    clients.add(websocket)
     try:
-        await sendGameState(websocket, game)
-        await play(websocket, connected_clients, game)
+        await sendGameState(websocket)
+        await play(websocket, clients)
     finally:
-        connected_clients.remove(websocket)
+        clients.remove(websocket)
 
 
 async def handler(websocket):
@@ -53,8 +69,8 @@ async def handler(websocket):
     print(message)
     event = json.loads(message)
     assert event["type"] == "init"
-
-    await join(websocket, CONNECTED_CLIENTS, GAME)
+    game.players.append(event["content"]["name"])
+    await join(websocket, connected_clients)
 
 
 async def main():
@@ -63,5 +79,5 @@ async def main():
 
 
 if __name__ == "__main__":
-    GAME.start()
+    game.start()
     asyncio.run(main())
