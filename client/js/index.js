@@ -5,20 +5,29 @@ function resize() {
     game.renderer.resize(window.innerWidth, window.innerHeight);
 }
 
-function connect() {
-    let address = document.querySelector("#connect-popup-input").value;
-    if (address == "") return;
-    address = "ws://" + address + ":" + config.server_port;
+function connect(address, username) {
     socket = new WebSocket(address);
 
     socket.addEventListener("open", () => {
         console.log("Connected to server.");
-        fadeOutLanding();
+        content = { name: username };
+        const initMsg = createMessage(ServerMessages.INIT, content);
+        socket.send(initMsg);
     });
     
     socket.addEventListener("message", (event) => {
-        console.log(event.data);
+        handleMessage(event.data);
     });
+}
+
+function createMessage(type, content) {
+    return JSON.stringify({ type: type, content: content });
+}
+
+function handleMessage(data) {
+    message = JSON.parse(data);
+    console.log("Received message (" + message.type + "): ");
+    console.log(message.content);
 }
 
 

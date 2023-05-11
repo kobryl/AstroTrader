@@ -1,3 +1,11 @@
+/*
+z-index:
+    0: canvas
+    10: ui
+    25: game ui
+    50: menu
+*/
+
 body {
     overflow-x: hidden;
     overflow-y: hidden;
@@ -16,12 +24,15 @@ body {
 }
 
 #ui-container,
-#canvas-container {
+#canvas-container,
+#game-ui,
+#hud {
     pointer-events: none;
 }
-
-#ui-container *, 
-#canvas-container * {
+ 
+#canvas-container *,
+.menu *,
+.button {
     pointer-events: auto;
 }
 
@@ -53,7 +64,7 @@ body {
     font-size: 35px;
 }
 
-.popup {
+.menu {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -67,13 +78,13 @@ body {
     z-index: 50;
 }
 
-.popup-title {
+.menu-title {
     font-size: 24px;
     margin-bottom: 20px;
     text-align: center;
 }
 
-.popup-input {
+.menu-input {
     width: 100%;
     height: 40px;
     border: 1px solid #a6abbd;
@@ -88,7 +99,7 @@ body {
     transition-duration: 100ms;
 }
 
-.popup-input:focus {
+.menu-input:focus {
     background-color: #313440;
 }
 
@@ -106,22 +117,36 @@ body {
     transition-duration: 100ms;
 }
 
-#connect-popup-button {
+#connect-menu .button,
+#connect-menu .menu-input {
     width: 100%;
 }
 
-.popup-button:hover {
+#connect-menu .menu-title {
+    margin-bottom: 30px;
+}
+
+#connect-menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+}
+
+.menu-button:hover {
     background-color: #313541;
 }
 
-.popup-button:active {
+.menu-button:active {
     background-color: #292c36;
-}
-
-#connect-popup-title {
-    margin-bottom: 30px;
 }
 
 #landing-section {
     transition-duration: 500ms;
+}
+
+#game-ui {
+    width: 100%;
+    height: 100%;
+    z-index: 25;
 }

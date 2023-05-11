@@ -1,20 +1,27 @@
-const config = {
+// Application configuration
+const Config = {
     // Server configuration
-    server_port: 8080,
+    SERVER_PORT: 8001,
 
     // Game configuration
-    map_size: 4096,
-    star_count: 400,
-    star_max_scale: 0.25,
-    star_min_scale: 0.05,
-    star_min_alpha: 0.35,
-    star_max_alpha: 1,
-    player_start_x: 2048,
-    player_start_y: 2048,
-    player_scale: 0.15,
-    player_initial_rotation: 0,
-    player_speed: 2.5,
-    player_rotation_speed: 0.025,
-    player_rotation_offset: Math.PI * 0.25,
-    player_move_stop_distance: 5
+    MAP_SIZE: 4096,
+    STAR_COUNT: 400,
+    STAR_MAX_SCALE: 0.25,
+    STAR_MIN_SCALE: 0.05,
+    STAR_MIN_ALPHA: 0.35,
+    STAR_MAX_ALPHA: 1,
+    PLAYER_START_X: 2048,
+    PLAYER_START_Y: 2048,
+    PLAYER_SCALE: 0.15,
+    PLAYER_INITIAL_ROTATION: 0,
+    PLAYER_SPEED: 2.5,
+    PLAYER_ROTATION_SPEED: 0.025,
+    PLAYER_ROTATION_OFFSET: Math.PI * 0.25,
+    PLAYER_MOVE_STOP_DISTANCE: 5
+}
+
+
+// Server messages definitions
+const ServerMessages = {
+    INIT: "init"
 }

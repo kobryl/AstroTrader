@@ -22,15 +22,16 @@
                 <h1>AstroMiner</h1>
                 <h2>Mining The Stars</h2>
             </div>
-            <div id="connect-popup" class="popup">
-                <div id="connect-popup-content">
-                    <div id="connect-popup-title" class="popup-title">Connect to server</div>
-                    <input id="connect-popup-input" class="popup-input" type="text" placeholder="Server address">
-                    <button id="connect-popup-button" class="popup-button button" onclick="connect()">Connect</button>
+            <div id="connect-menu" class="menu">
+                <div id="connect-menu-content">
+                    <div class="menu-title">Connect to server</div>
+                    <input id="address-input" class="menu-input" type="text" placeholder="Server address">
+                    <input id="username-input" class="menu-input" type="text" placeholder="Username">
+                    <button class="menu-button button" onclick="handleConnectClick()">Connect</button>
                 </div>
             </div>
-            <div class="button" onclick="fadeOutLanding(); startGame()" style="position: absolute; top: 70%; left: 50%; width: 50px; transform: translate(-50%, -50%);">test</div>
-        </div>
+            <div class="button" onclick="fadeOutLanding(); startGame()" style="position: absolute; top: 80%; left: 50%; width: 50px; transform: translate(-50%, -50%);">test</div>
+        </div>        
     </div>
     <div id="canvas-container"></div>
 </body>
