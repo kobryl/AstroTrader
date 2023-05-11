@@ -28,5 +28,19 @@ class Game:
     def handleUpdates(self):
         pass
 
-    def sendUpdates(self):
+    def sendUpdates(self) -> dict[any]:
+        update = {
+                "type": "update",
+                "content": {
+                    "stations": {
+
+                    },
+                    "players": {
+
+                    }
+                }
+            }
+        pass
+
+    def getState(self):
         pass

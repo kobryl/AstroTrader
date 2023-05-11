@@ -79,6 +79,7 @@ import json
 import queue
 
 import websockets
+import websockets.exceptions
 
 from game import Game
 
@@ -92,9 +93,7 @@ async def error(websocket, message):
 
 
 async def sendGameState(websocket):
-    game_state = {
-
-    }
+    game_state = game.getState()
     await websocket.send(json.dumps(game_state))
     raise NotImplementedError
 
@@ -115,17 +114,7 @@ async def play(websocket, clients: set):
         else:
             await error(websocket, "Unknown event type")
         if update_flag:
-            update_event = {
-                "type": "update",
-                "content": {
-                    "stations": {
-
-                    },
-                    "players": {
-
-                    }
-                }
-            }
+            update_event = game.sendUpdates()
             websockets.broadcast(clients, json.dumps(update_event))
             update_flag = False
             raise NotImplementedError
@@ -137,7 +126,10 @@ async def join(websocket, clients: set):
         await sendGameState(websocket)
         await play(websocket, clients)
     finally:
-        clients.remove(websocket)
+        try:
+            await websocket.close()
+        finally:
+            clients.remove(websocket)
 
 
 async def handler(websocket):
@@ -147,6 +139,7 @@ async def handler(websocket):
     assert event["type"] == "init"
     game.players.append(event["content"]["name"])
     await join(websocket, connected_clients)
+
 
 
 async def main():
