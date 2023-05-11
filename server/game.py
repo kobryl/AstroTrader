@@ -44,3 +44,6 @@ class Game:
 
     def getState(self):
         pass
+
+    def addPlayer(self, name):
+        pass
