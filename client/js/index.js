@@ -25,10 +25,11 @@ function createMessage(type, content) {
     return JSON.stringify({ type: type, content: content });
 }
 
-function handleMessage(data) {
-    message = JSON.parse(data);
-    console.log("Received message (" + message.type + "): ");
-    console.log(message.content);
+function handleMessage(message) {
+    data = JSON.parse(message);
+    console.log("Received message (" + data.type + "): ");
+    console.log(data.content);
+    return data;
 }
 
 
@@ -36,5 +37,5 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#canvas-container").appendChild(game.view);
     window.addEventListener("resize", onResize);
     onResize();
-    // setHudVisibility(false);
+    setHudVisibility(false);
 });

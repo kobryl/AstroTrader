@@ -2,6 +2,7 @@ from player import Player
 from config import config
 from station import Station
 import random
+import time
 
 
 class Game:
@@ -10,9 +11,13 @@ class Game:
         self.players = []
         self.net_interface = None
         self.station = Station('PG', [0, 0])
+        self.delta_time = 0
+        self.last_frame_time = time.time()
 
     def start(self):
         while self.state != 2:
+            self.delta_time = time.time() - self.last_frame_time
+            self.last_frame_time = time.time()
             self.handleUpdates()
             self.calculateEconomy()
             self.calculatePlayers()
@@ -23,7 +28,7 @@ class Game:
 
     def calculatePlayers(self):
         for player in self.players:
-            player.move()
+            player.move(self.delta_time)
 
     def handleUpdates(self):
         pass
@@ -46,4 +51,5 @@ class Game:
         pass
 
     def addPlayer(self, name):
-        pass
+        player = Player(name)
+        self.players.append(player)
