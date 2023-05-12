@@ -1,8 +1,9 @@
 let socket = null;
 
 
-function resize() {
+function onResize() {
     game.renderer.resize(window.innerWidth, window.innerHeight);
+    centerOnPlayer();
 }
 
 function connect(address, username) {
@@ -33,6 +34,6 @@ function handleMessage(data) {
 
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#canvas-container").appendChild(game.view);
-    window.addEventListener("resize", resize);
-    resize();
+    window.addEventListener("resize", onResize);
+    onResize();
 });

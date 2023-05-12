@@ -110,3 +110,11 @@ function drawInitialScene() {
     borderBottom.y = Config.MAP_SIZE;
     game.stage.addChild(borderBottom);
 }
+
+function centerOnPlayer() {
+    if (!player) return;
+    game.stage.pivot.x = player.x;
+    game.stage.pivot.y = player.y;
+    game.stage.position.x = window.innerWidth / 2;
+    game.stage.position.y = window.innerHeight / 2;
+}
