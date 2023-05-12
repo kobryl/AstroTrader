@@ -147,5 +147,5 @@ async def main():
 
 
 if __name__ == "__main__":
-    game.start()
+    # game.start()
     asyncio.run(main())
