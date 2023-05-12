@@ -72,8 +72,8 @@ function gameLoop() {
         const dx = movingTowards.x - player.x;
         const dy = movingTowards.y - player.y;
         const angle = Math.atan2(dy, dx);
-        player.x += Config.PLAYER_SPEED * Math.cos(angle);
-        player.y += Config.PLAYER_SPEED * Math.sin(angle);
+        player.x += Config.PLAYER_SPEED * Math.cos(angle) * game.ticker.deltaTime;
+        player.y += Config.PLAYER_SPEED * Math.sin(angle) * game.ticker.deltaTime;
         player.rotation = angle + Config.PLAYER_ROTATION_OFFSET;
         redrawMovementTargetLine();
 
