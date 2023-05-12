@@ -22,6 +22,7 @@ the state. The game state is a dictionary with the following keys:
         }
         - "players": {
             - "player": {
+                - "id": 0
                 - "name": "Player 1"
                 - "position": [0, 0]
                 - "money": 1000
@@ -38,7 +39,7 @@ keys:
 
     - "type": "move"
     - "content": {
-        - "direction": [1, 0]
+        - "destination": [1, 0]
     }
 
     - "type": "buy"
