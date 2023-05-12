@@ -36,4 +36,5 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#canvas-container").appendChild(game.view);
     window.addEventListener("resize", onResize);
     onResize();
+    // setHudVisibility(false);
 });

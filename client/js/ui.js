@@ -32,3 +32,15 @@ function fadeOutLanding() {
     }, 1000);
 }
 
+function setHudVisibility(isVisible) {
+    if (isVisible) {
+        document.querySelector("#hud").style.display = 'initial';
+    } else {
+        document.querySelector("#hud").style.display = 'none';
+    }
+}
+
+function updatePlayerCoordsHud(x, y, precision = 0) {
+    document.querySelector("#player-coords-x .coords-value").innerHTML = Math.round(x, precision);
+    document.querySelector("#player-coords-y .coords-value").innerHTML = Math.round(y, precision);
+}
