@@ -19,7 +19,7 @@ def hello():
         }
     }
     update = {
-        "type": "update",
+        "type": "move",
         "content": {
             "player": {
                 "destination": [300, 300],

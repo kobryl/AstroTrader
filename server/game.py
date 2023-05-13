@@ -62,7 +62,7 @@ class Game:
         if message["type"] == "join":
             print(message)
             self.addPlayer(message["content"]["player"]["name"], len(self.players))
-        if message["type"] == "update":
+        if message["type"] == "move":
             print(message)
             player = message["content"]["player"]
             self.players[player_id].destination = player["destination"]
@@ -71,21 +71,21 @@ class Game:
     def sendUpdates(self):
         if self.ticks_since_last_update < 10:
             return
+        update = {
+            "type": "update",
+            "content": {
+                "players":{}
+            }
+        }
         for idx, player in enumerate(self.players):
-            update = {
-                    "type": "update",
-                    "content": {
-                        "player": {
-                            "name": player.name,
-                            "position": player.position,
-                            "destination": player.destination,
-                            "speed": player.speed,
-                            "id": player.id
-                        },
-                    }
-                }
-            json_object = json.dumps(update, indent=4)
-            asyncio.run(self.net_interface.send_message(idx, json_object))
+            update["content"]["players"][idx] = {
+                "name": player.name,
+                "position": player.position,
+                "destination": player.destination,
+                "speed": player.speed,
+            }
+            json_object = json.dumps(update)
+            asyncio.run(self.net_interface.broadcast(json_object))
 
     def getState(self):
         pass

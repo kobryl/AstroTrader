@@ -1,3 +1,5 @@
+import math
+
 from config import config
 
 
@@ -15,8 +17,17 @@ class Player:
         if self.destination == self.position:
             return
         # later fix case where diagonal movement is faster than horizontal/vertical
-        self.position[0] = self.position[0] + self.speed * (self.destination[0] - self.position[0]) * delta_time
-        self.position[1] = self.position[1] + self.speed * (self.destination[1] - self.position[1]) * delta_time
+        dx = self.destination[0] - self.position[0]
+        dy = self.destination[1] - self.position[1]
+        angle = math.atan2(dy, dx)
+        x = self.speed * delta_time * math.cos(angle)
+        y = self.speed * delta_time * math.sin(angle)
+        self.position[0] += x
+        self.position[1] += y
+        if abs(self.destination[0] - self.position[0]) < self.speed * delta_time:
+            self.position[0] = self.destination[0]
+        if abs(self.destination[1] - self.position[1]) < self.speed * delta_time:
+            self.position[1] = self.destination[1]
 
     def setDestination(self, x, y):
         self.destination = [x, y]

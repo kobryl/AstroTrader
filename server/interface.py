@@ -54,7 +54,7 @@ class Server:
 
     async def __start_server(self):
         print("Running server")
-        async with websockets.serve(self.__handle_client, INET_ADDR, IP_PORT):
+        async with websockets.serve(self.__handle_client, None, IP_PORT):
             await asyncio.Future()
         print("Server stopped")
 
