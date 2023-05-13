@@ -28,6 +28,11 @@ class Server:
         async for message in websocket:
             self.__message_queue.put((player_id, message))
 
+    def get_message(self):
+        if self.__message_queue.empty():
+            return None
+        return self.__message_queue.get()
+
     async def send_message(self, player_id, message):
         print(f"Sending message to {player_id}: {message}")
         await self.__clients[player_id].send(message)

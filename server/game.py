@@ -4,6 +4,7 @@ from player import Player
 from config import config
 from station import Station
 from interface import Server
+import json
 import asyncio
 
 import random
@@ -39,6 +40,7 @@ class Game:
             self.calculateEconomy()
             self.calculatePlayers()
             self.sendUpdates()
+            time.sleep(0.5)
 
 
     def calculateEconomy(self):
@@ -49,6 +51,14 @@ class Game:
             player.move(self.delta_time)
 
     def handleUpdates(self):
+        message = self.net_interface.get_message()
+        if(message != None):
+            print(message)
+            print(message[1])
+        if(message != None and message[1] == "Joined"):
+            print(message)
+            print(message[1])
+            self.addPlayer("test")
         pass
 
     def sendUpdates(self) -> dict[any]:
@@ -64,7 +74,10 @@ class Game:
                     }
                 }
             }
-        pass
+        # json_object = json.dumps(update, indent=4)
+        if(len(self.players) > 0):
+            print("XD")
+            asyncio.run(self.net_interface.send_message(0, "test"))
 
     def getState(self):
         pass

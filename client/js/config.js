@@ -1,7 +1,7 @@
 // Application configuration
 const Config = {
     // Server configuration
-    SERVER_PORT: 8001,
+    SERVER_PORT: 8801,
 
     // Game configuration
     MAP_SIZE: 4096,
