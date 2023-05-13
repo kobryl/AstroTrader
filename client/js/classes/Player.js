@@ -6,11 +6,11 @@ class Player {
         this.movementTarget = null;
         this.movementTargetLine = null;
         this.destinationPoint = null;
-        this.initPlayerObjects(x, y);
+        this.initPlayerObjects();
         this.setPos(x, y);
     }
 
-    initPlayerObjects(playerX, playerY) {
+    initPlayerObjects() {
         this.movementTarget = new PIXI.Sprite(movementTargetTexture);
         this.movementTarget.anchor.set(0.5);
         this.movementTarget.x = 0;
@@ -23,17 +23,15 @@ class Player {
 
         this.ship = new PIXI.Sprite(rocketTexture);
         this.ship.anchor.set(0.5);
-        this.ship.x = playerX;
-        this.ship.y = playerY;
         this.ship.scale.set(Config.PLAYER_SCALE);
         this.ship.rotation = Config.PLAYER_INITIAL_ROTATION - Config.PLAYER_ROTATION_OFFSET;
 
         this.nameTag = new PIXI.Text(this.name, {
-            fontFamily: 'Arial', fontSize: Config.PLAYER_NAME_FONT_SIZE, fill: Config.PLAYER_NAME_COLOR
+            fontFamily: 'Arial', 
+            fontSize: Config.PLAYER_NAME_FONT_SIZE, 
+            fill: Config.PLAYER_NAME_COLOR
         });
         this.nameTag.anchor.set(0.5);
-        this.nameTag.x = playerX;
-        this.nameTag.y = playerY + Config.PLAYER_NAME_OFFSET;
         game.stage.addChild(this.nameTag);
     }
 

@@ -6,6 +6,7 @@ const game = new PIXI.Application({
 game.view.id = "game-canvas";
 
 let clientPlayer;
+let playerCompass;
 let otherPlayers = [];
 let keys = [];              // redundant, leftovers from keyboard-based movement
 let stations = [];
@@ -32,22 +33,25 @@ function initPlayers() {
     // todo: others from server data
 }
 
-function initObjects(data) {
-    stations = data.stations;
-    asteroids = data.asteroids;
-
-    stations.forEach(element => {
-        // todo: implement
+function initObjects() {        // initObjects(data) { ... }
+    // temporary, for testing
+    asteroids.push(new Asteroid(2300, 2300));
+    asteroids.push(new Asteroid(2800, 1600));
+    asteroids.forEach(asteroid => {
+        playerCompass.addObject(asteroid);
     });
 
-    asteroids.forEach(element => {
-        // todo: implement
+    stations.push(new Station(1500, 2000));
+    stations.push(new Station(3000, 3000));
+    stations.forEach(station => {
+        playerCompass.addObject(station);
     });
 }
 
 function startGame() {
+    playerCompass = new PlayerCompass(Config.PLAYER_START_X, Config.PLAYER_START_Y);
+    initObjects();              // from someServerData as parameter
     initPlayers();              // from someServerData as parameter
-    // initObjects(someServerData);
     game.ticker.add(gameLoop);
     game.stage.addEventListener("click", onClick);
     window.addEventListener("keydown", keyDown);
@@ -58,6 +62,8 @@ function startGame() {
 function gameLoop() {
     movePlayers();
     updatePlayerCoordsHud(clientPlayer.x, clientPlayer.y);
+    playerCompass.setPos(clientPlayer.x, clientPlayer.y);
+    playerCompass.update(clientPlayer.x, clientPlayer.y);
     game.stage.pivot.x = clientPlayer.x;
     game.stage.pivot.y = clientPlayer.y;
 }
