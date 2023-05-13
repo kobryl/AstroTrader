@@ -20,6 +20,7 @@ function handleMessage(message) {
                 waitingForFirstUpdate = false;
                 startGame();
                 setHudVisibility(true);
+                fadeOutLanding();
             }
     }
 }
