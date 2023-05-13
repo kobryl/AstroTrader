@@ -12,6 +12,7 @@ const Config = {
     PLAYER_ROTATION_SPEED: 0.025,
     PLAYER_ROTATION_OFFSET: Math.PI * 0.25,
     PLAYER_MOVE_STOP_DISTANCE: 2,
+    OBJECT_INTERACTION_DISTANCE: 240,
 
     // Graphics configuration
     BACKGROUND_COLOR: 0x272b37,
@@ -30,6 +31,8 @@ const Config = {
     MOVEMENT_TARGET_SCALE: 0.6,
     MOVEMENT_TARGET_ALPHA: 0.6,
     MOVEMENT_TARGET_LINE_ALPHA: 0.25,
+    OBJECT_TARGET_SCALE: 0.7,
+    OBJECT_TARGET_ALPHA: 0.6,
     PLAYER_NAME_OFFSET: 60,
     PLAYER_NAME_FONT_SIZE: 18,
     COMPASS_SCALE_MULT: 0.25,
@@ -57,4 +60,5 @@ const asteroidTexture = PIXI.Texture.from("assets/asteroid.png");
 const stationTexture = PIXI.Texture.from("assets/station.png");
 const rocketTexture = PIXI.Texture.from("assets/rocket.png");
 const movementTargetTexture = PIXI.Texture.from("assets/movement_target.png");
+const objectTargetTexture = PIXI.Texture.from("assets/object_target.png");
 const arrowTexture = PIXI.Texture.from("assets/arrow.png");
