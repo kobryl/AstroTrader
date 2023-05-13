@@ -1,4 +1,5 @@
 let socket = null;
+let waitingForFirstUpdate = true;
 
 
 // Message handling functions
@@ -11,7 +12,16 @@ function handleMessage(message) {
     data = JSON.parse(message);
     console.log("Received message (" + data.type + "): ");
     console.log(data.content);
-    return data;
+
+    switch (data.type) {
+        case ServerMessages.UPDATE:
+            handleUpdate(data.content);
+            if (waitingForFirstUpdate) {
+                waitingForFirstUpdate = false;
+                startGame();
+                setHudVisibility(true);
+            }
+    }
 }
 
 
@@ -39,4 +49,11 @@ function sendMoveToDestination(dest) {
     const msg = createMessage(ServerMessages.MOVE, content);
     console.log(msg);
     socket.send(msg);
+}
+
+
+// Message receiving functions
+
+function handleUpdate(data) { 
+
 }

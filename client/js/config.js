@@ -51,7 +51,8 @@ const Config = {
 // Server messages definitions
 const ServerMessages = {
     JOIN: "join",
-    MOVE: "move"
+    MOVE: "move",
+    UPDATE: "update"
 }
 
 
