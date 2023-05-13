@@ -19,7 +19,7 @@ function handleConnectClick() {
         return;
     }
     
-    address = "ws:" + address + ":" + Config.SERVER_PORT;
+    address = "ws://" + address + ":" + Config.SERVER_PORT;
     connect(address, username);
 }
 
