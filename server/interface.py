@@ -8,6 +8,7 @@ from config import config
 INET_ADDR = config['server_address']
 IP_PORT = config['server_port']
 
+
 class Server:
     def __init__(self):
         self.__clients = []
