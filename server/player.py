@@ -2,13 +2,14 @@ from config import config
 
 
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, id):
         self.money = 0
         self.position = [0, 0]
         self.inventory = []
         self.destination = [0, 0]
         self.speed = config['default_speed']
         self.name = name
+        self.id = id
 
     def move(self, delta_time):
         if self.destination == self.position:

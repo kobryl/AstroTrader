@@ -13,6 +13,7 @@ class Server:
         self.__clients = []
         self.__stop = asyncio.Future()
         self.__clients_lock = threading.Lock()
+        self.__messages_lock = threading.Lock()
         self.__websocket_server = None
         self.__message_queue = queue.Queue()
         self.__threadtest = None
@@ -26,12 +27,20 @@ class Server:
         self.__clients_lock.release()
         print(f"Current clients: {self.__clients}")
         async for message in websocket:
+            self.__messages_lock.acquire()
             self.__message_queue.put((player_id, message))
+            self.__messages_lock.release()
 
     def get_message(self):
-        if self.__message_queue.empty():
-            return None
-        return self.__message_queue.get()
+        player_id = len(self.__clients)
+        self.__messages_lock.acquire()
+        message = None
+        if not self.__message_queue.empty():
+            message = self.__message_queue.get()
+        self.__messages_lock.release()
+        if message is not None:
+            print(f"Got message: {message}")
+        return message
 
     async def send_message(self, player_id, message):
         print(f"Sending message to {player_id}: {message}")
