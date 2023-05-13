@@ -32,11 +32,15 @@ const Config = {
     MOVEMENT_TARGET_LINE_ALPHA: 0.25,
     PLAYER_NAME_OFFSET: 60,
     PLAYER_NAME_FONT_SIZE: 18,
-    COMPASS_OBJECT_SCALE_MULT: 0.25,
-    COMPASS_OBJECT_LABEL_FONT_SIZE: 14,
-    COMPASS_OBJECT_LABEL_OFFSET: 25,
-    COMPASS_OBJECT_FADE_DISTANCE: 640,
-    COMPASS_OBJECT_COMPLETE_FADE_DISTANCE: 320,
+    COMPASS_SCALE_MULT: 0.25,
+    COMPASS_ICON_OFFSET: -8,
+    COMPASS_LABEL_FONT_SIZE: 14,
+    COMPASS_LABEL_OFFSET: 17,
+    COMPASS_ARROW_SCALE: 0.35,
+    COMPASS_ARROW_OFFSET: 35,
+    COMPASS_ARROW_ROTATION_OFFSET: Math.PI * 0.5,
+    COMPASS_FADE_DISTANCE: 640,
+    COMPASS_COMPLETE_FADE_DISTANCE: 320,
     COMPASS_RADIUS: 128
 }
 
@@ -48,9 +52,9 @@ const ServerMessages = {
 
 
 // Game graphics
-
 const starTexture = PIXI.Texture.from("assets/star.png");
 const asteroidTexture = PIXI.Texture.from("assets/asteroid.png");
 const stationTexture = PIXI.Texture.from("assets/station.png");
 const rocketTexture = PIXI.Texture.from("assets/rocket.png");
 const movementTargetTexture = PIXI.Texture.from("assets/movement_target.png");
+const arrowTexture = PIXI.Texture.from("assets/arrow.png");
