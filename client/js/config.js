@@ -34,7 +34,7 @@ const Config = {
 
 // Server messages definitions
 const ServerMessages = {
-    INIT: "init"
+    INIT_TYPE: "init"
 }
 
 

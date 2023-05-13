@@ -12,7 +12,7 @@ function connect(address, username) {
     socket.addEventListener("open", () => {
         console.log("Connected to server.");
         content = { name: username };
-        const initMsg = createMessage(ServerMessages.INIT, content);
+        const initMsg = createMessage(ServerMessages.INIT_TYPE, content);
         socket.send(initMsg);
     });
     
