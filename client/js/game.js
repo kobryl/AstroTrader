@@ -165,10 +165,12 @@ function moveToObject(object) {
     let dest = new PIXI.Point(object.x, object.y);
     const dx = dest.x - clientPlayer.x;
     const dy = dest.y - clientPlayer.y;
-    const angle = Math.atan2(dy, dx);
-    dest.x -= Math.cos(angle) * Config.OBJECT_INTERACTION_DISTANCE;
-    dest.y -= Math.sin(angle) * Config.OBJECT_INTERACTION_DISTANCE;
-    clientPlayer.destinationPoint = dest;
-    clientPlayer.showMovementTarget();
-    // clientPlayer.showMovementTarget();
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist >= Config.OBJECT_INTERACTION_DISTANCE) {
+        const angle = Math.atan2(dy, dx);
+        dest.x -= Math.cos(angle) * Config.OBJECT_INTERACTION_DISTANCE;
+        dest.y -= Math.sin(angle) * Config.OBJECT_INTERACTION_DISTANCE;
+        clientPlayer.destinationPoint = dest;
+        clientPlayer.showMovementTarget();
+    }
 }
