@@ -38,7 +38,8 @@ class Server:
         if not self.__message_queue.empty():
             message = self.__message_queue.get()
         self.__messages_lock.release()
-        print(f"Got message: {message}")
+        if message is not None:
+            print(f"Got message: {message}")
         return message
 
     async def send_message(self, player_id, message):

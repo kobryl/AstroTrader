@@ -16,6 +16,7 @@ class Game:
         self.state = 0
         self.players = []
         self.net_interface = Server()
+        self.ticks_since_last_update = 0
 
 
         # Define a new function that will start the server in a new thread
@@ -30,10 +31,10 @@ class Game:
         self.station = Station('PG', [0, 0])
         self.delta_time = 0
         self.last_frame_time = time.time()
-        print("test:)")
 
     def start(self):
         while self.state != 2:
+            self.ticks_since_last_update += 1
             self.delta_time = time.time() - self.last_frame_time
             self.last_frame_time = time.time()
             self.handleUpdates()
@@ -51,40 +52,44 @@ class Game:
             player.move(self.delta_time)
 
     def handleUpdates(self):
-        print("lol1")
         message = self.net_interface.get_message()
-        print("lol2")
-        if(message != None):
+        if message is None:
+            return
+        player_id = message[0]
+        message = message[1]
+        print(message)
+        message = json.loads(message)
+        if message["type"] == "join":
             print(message)
-            print(message[1])
-        if(message != None and message[1] == "Joined"):
+            self.addPlayer(message["content"]["player"]["name"], len(self.players))
+        if message["type"] == "update":
             print(message)
-            print(message[1])
-            self.addPlayer("test")
-        pass
+            player = message["content"]["player"]
+            self.players[player_id].destination = player["destination"]
 
-    def sendUpdates(self) -> dict[any]:
 
-        update = {
-                "type": "update",
-                "content": {
-                    "stations": {
-
-                    },
-                    "players": {
-
+    def sendUpdates(self):
+        if self.ticks_since_last_update < 10:
+            return
+        for idx, player in enumerate(self.players):
+            update = {
+                    "type": "update",
+                    "content": {
+                        "player": {
+                            "name": player.name,
+                            "position": player.position,
+                            "destination": player.destination,
+                            "speed": player.speed,
+                            "id": player.id
+                        },
                     }
                 }
-            }
-        # json_object = json.dumps(update, indent=4)
-        print("XDDD")
-        if(len(self.players) > 0):
-            print("XD")
-            asyncio.run(self.net_interface.send_message(0, "test"))
+            json_object = json.dumps(update, indent=4)
+            asyncio.run(self.net_interface.send_message(idx, json_object))
 
     def getState(self):
         pass
 
-    def addPlayer(self, name):
-        player = Player(name)
+    def addPlayer(self, name, id):
+        player = Player(name, id)
         self.players.append(player)
