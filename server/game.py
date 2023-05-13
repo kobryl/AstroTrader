@@ -51,7 +51,9 @@ class Game:
             player.move(self.delta_time)
 
     def handleUpdates(self):
+        print("lol1")
         message = self.net_interface.get_message()
+        print("lol2")
         if(message != None):
             print(message)
             print(message[1])
@@ -75,6 +77,7 @@ class Game:
                 }
             }
         # json_object = json.dumps(update, indent=4)
+        print("XDDD")
         if(len(self.players) > 0):
             print("XD")
             asyncio.run(self.net_interface.send_message(0, "test"))
