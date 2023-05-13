@@ -4,7 +4,7 @@ z-index:
     10: ui
     25: game ui
     30: hud elements
-    50: menu
+    50: menus
 */
 
 body {
@@ -34,7 +34,8 @@ body {
  
 #canvas-container *,
 .menu *,
-.button {
+.button,
+#menus * {
     pointer-events: auto;
 }
 
@@ -171,4 +172,62 @@ body {
 #player-coords .coords {
     line-height: 1.75;
     font-size: 18px;
+}
+
+#active-menu {
+    display: none;
+    left: initial;
+    transform: translate(0%, -50%);
+    background-color: rgba(65, 70, 86, 0.85);
+    right: 30px;
+    height: 90%;
+    min-width: 300px;
+}
+
+.menu-header {
+    position: relative;
+    margin: 0 auto 20px auto;
+    text-align: center;
+    width: 100%;
+    padding: 10px 0;
+    border: 1px solid #a6abbd80;
+    border-radius: 5px;
+}
+
+.object-name {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.object-id {
+    font-size: 18px;
+}
+
+.object-id::before {
+    content: "ID: ";
+}
+
+.object-type {
+    font-size: 15px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: #ffffff80;
+}
+
+.close-menu-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #a6abbd80;
+    border-radius: 5px;
+    background-color: #414656;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    z-index: 55;
 }

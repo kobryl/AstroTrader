@@ -38,4 +38,5 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", onResize);
     onResize();
     setHudVisibility(false);
-});
+    document.querySelector("#active-menu").addEventListener("click", (e) => { e.stopPropagation(); });
+ });

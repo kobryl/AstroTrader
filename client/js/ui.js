@@ -28,6 +28,10 @@ function handleConnectClick() {
     connect(address, username);
 }
 
+function closeActiveMenu() {
+    document.querySelector("#active-menu").style.display = 'none';
+}
+
 
 // UI drawing functions
 
@@ -40,11 +44,19 @@ function openObjectMenu(object) {
 }
 
 function openAsteroidMenu(asteroid) {
-    console.log("Opening asteroid menu for asteroid " + asteroid.id);
+    const menu = document.querySelector("#active-menu");
+    menu.style.display = 'initial';
+    menu.querySelector(".object-name").innerHTML = asteroid.name;
+    menu.querySelector(".object-id").innerHTML = asteroid.id;
+    menu.querySelector(".object-type").innerHTML = "Asteroid";
 }
 
 function openStationMenu(station) {
-    console.log("Opening station menu for station " + station.id);
+    const menu = document.querySelector("#active-menu");
+    menu.style.display = 'initial';
+    menu.querySelector(".object-name").innerHTML = station.name;
+    menu.querySelector(".object-id").innerHTML = station.id;
+    menu.querySelector(".object-type").innerHTML = "Station";
 }
 
 function fadeOutLanding() {
