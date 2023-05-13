@@ -20,8 +20,8 @@ init();
 function init() {
     game.stage.pivot.x = Config.PLAYER_START_X;
     game.stage.pivot.y = Config.PLAYER_START_Y;
-    game.stage.position.x = window.innerWidth / 2;
-    game.stage.position.y = window.innerHeight / 2;
+    game.stage.position.x = window.innerWidth / (2 * devicePixelRatio);
+    game.stage.position.y = window.innerHeight / (2 * devicePixelRatio);
     game.stage.eventMode = "static";
     game.stage.hitArea = new PIXI.Rectangle(0, 0, Config.MAP_SIZE, Config.MAP_SIZE);
     drawInitialScene();
@@ -154,8 +154,8 @@ function centerOnPlayer() {
     if (!clientPlayer) return;
     game.stage.pivot.x = clientPlayer.x;
     game.stage.pivot.y = clientPlayer.y;
-    game.stage.position.x = window.innerWidth / 2;
-    game.stage.position.y = window.innerHeight / 2;
+    game.stage.position.x = window.innerWidth / (2 * devicePixelRatio);
+    game.stage.position.y = window.innerHeight / (2 * devicePixelRatio);
 }
 
 function addPlayerObjectsToStage(player) {
