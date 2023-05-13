@@ -6,6 +6,7 @@ class Player {
         this.movementTarget = null;
         this.movementTargetLine = null;
         this.destinationPoint = null;
+        this.interactionObject = null;
         this.initPlayerObjects();
         this.setPos(x, y);
     }
@@ -44,7 +45,7 @@ class Player {
         this.nameTag.y = y + Config.PLAYER_NAME_OFFSET;
     }
 
-    move(x, y) {
+    moveBy(x, y) {
         this.x += x;
         this.y += y;
         this.ship.x += x;
@@ -60,7 +61,13 @@ class Player {
         const x = Config.PLAYER_SPEED * Math.cos(angle) * game.ticker.deltaTime;
         const y = Config.PLAYER_SPEED * Math.sin(angle) * game.ticker.deltaTime;
         this.ship.rotation = angle + Config.PLAYER_ROTATION_OFFSET;
-        this.move(x, y);
+        this.moveBy(x, y);
+    }
+
+    startMovingToPoint(point) {
+        this.destinationPoint = point;
+        this.showMovementTarget();
+        this.redrawMovementTargetLine();
     }
 
     clampCoords() {

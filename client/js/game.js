@@ -35,14 +35,14 @@ function initPlayers() {
 
 function initObjects() {        // initObjects(data) { ... }
     // temporary, for testing
-    asteroids.push(new Asteroid(2300, 2300));
-    asteroids.push(new Asteroid(2800, 1600));
+    asteroids.push(new Asteroid(0, 2300, 2300));
+    asteroids.push(new Asteroid(1, 2800, 1600));
     asteroids.forEach(asteroid => {
         playerCompass.addObject(asteroid);
     });
 
-    stations.push(new Station(1500, 2000));
-    stations.push(new Station(3000, 3000));
+    stations.push(new Station(0, 1500, 2000));
+    stations.push(new Station(1, 3000, 3000));
     stations.forEach(station => {
         playerCompass.addObject(station);
     });
@@ -78,6 +78,10 @@ function movePlayers() {
             if (player.isDestinationReached()) {
                 player.destinationPoint = null;
                 player.movementTarget.visible = false;
+                if (player === clientPlayer && player.interactionObject) {
+                    openObjectMenu(player.interactionObject);
+                }
+                player.interactionObject = null;
             }
         }
     });
@@ -88,8 +92,8 @@ function movePlayers() {
 
 function onClick(e) {
     if (e.global.x < 0 || e.global.x > Config.MAP_SIZE || e.global.y < 0 || e.global.y > Config.map_size) return;
-    clientPlayer.destinationPoint = game.stage.toLocal(e.global);
-    clientPlayer.showMovementTarget();
+    clientPlayer.startMovingToPoint(game.stage.toLocal(e.global));
+    clientPlayer.interactionObject = null;
     // todo: send to server
 }
 
@@ -170,7 +174,10 @@ function moveToObject(object) {
         const angle = Math.atan2(dy, dx);
         dest.x -= Math.cos(angle) * Config.OBJECT_INTERACTION_DISTANCE;
         dest.y -= Math.sin(angle) * Config.OBJECT_INTERACTION_DISTANCE;
-        clientPlayer.destinationPoint = dest;
-        clientPlayer.showMovementTarget();
+        clientPlayer.startMovingToPoint(dest);
+        clientPlayer.interactionObject = object;
+    }
+    else {
+        openObjectMenu(object);
     }
 }

@@ -1,5 +1,6 @@
 class InteractableObject {
-    constructor(x, y, texture, scale) {
+    constructor(id, x, y, texture, scale) {
+        this.id = id;
         this.sprite = null;
         this.targetMarker = null;
         this.initSprites(texture, scale);

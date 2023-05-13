@@ -1,3 +1,5 @@
+// Getter functions for UI elements
+
 function getPlayerName() {
     return document.querySelector("#username-input").value;
 }
@@ -5,6 +7,9 @@ function getPlayerName() {
 function getServerAddress() {
     return document.querySelector("#address-input").value;
 }
+
+
+// UI event handlers
 
 function handleConnectClick() {
     let address = getServerAddress();
@@ -21,6 +26,25 @@ function handleConnectClick() {
     
     address = "ws://" + address + ":" + Config.SERVER_PORT;
     connect(address, username);
+}
+
+
+// UI drawing functions
+
+function openObjectMenu(object) {
+    if (object instanceof Asteroid) {
+        openAsteroidMenu(object);
+    } else if (object instanceof Station) {
+        openStationMenu(object);
+    }
+}
+
+function openAsteroidMenu(asteroid) {
+    console.log("Opening asteroid menu for asteroid " + asteroid.id);
+}
+
+function openStationMenu(station) {
+    console.log("Opening station menu for station " + station.id);
 }
 
 function fadeOutLanding() {
