@@ -68,6 +68,7 @@ class Player {
         this.destinationPoint = point;
         this.showMovementTarget();
         this.redrawMovementTargetLine();
+        sendMoveToDestination(this.destinationPoint);
     }
 
     clampCoords() {

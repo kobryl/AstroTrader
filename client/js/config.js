@@ -50,7 +50,8 @@ const Config = {
 
 // Server messages definitions
 const ServerMessages = {
-    INIT_TYPE: "init"
+    JOIN: "join",
+    MOVE: "move"
 }
 
 
