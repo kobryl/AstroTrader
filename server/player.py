@@ -29,6 +29,8 @@ class Player:
             self.position[0] = self.destination[0]
         if abs(self.destination[1] - self.position[1]) < self.speed * delta_time:
             self.position[1] = self.destination[1]
+        if self.position == self.destination:
+            self.destination = None
 
     def setDestination(self, x, y):
         self.destination = [x, y]
