@@ -19,7 +19,6 @@ class Player:
             return
         if self.destination is None:
             return
-        print(self.name + " moving to " + str(self.destination))
         # later fix case where diagonal movement is faster than horizontal/vertical
         dx = self.destination[0] - self.position[0]
         dy = self.destination[1] - self.position[1]
