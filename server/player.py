@@ -42,3 +42,7 @@ class Player:
 
     def addToInventory(self, item):
         self.game.giveItem(self, item)
+
+    def sendMiningNotification(self, progress):
+        self.game.sendMiningNotification(self, progress)
+

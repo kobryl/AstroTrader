@@ -22,6 +22,8 @@ class Game:
         self.net_interface = Server()
         self.ticks_since_last_update = 0
         self.ticks_between_updates = config['ticks_to_update']
+        self.ticks_since_last_economy_change = 0
+        self.ticks_between_economy_changes = config['ticks_to_change_economy']
         self.map_size = config['map_size']
         self.starting_position = [config['player_start_x'], config['player_start_y']]
         self.populateAsteroids()
@@ -59,7 +61,10 @@ class Game:
                 time.sleep(max(0.00817 - time_of_tick, 0))
 
     def calculateEconomy(self):
-        self.station.current_trade_modifier += random.random() * config['market_fluctuation']
+        self.ticks_since_last_economy_change += 1
+        if self.ticks_since_last_economy_change >= self.ticks_between_economy_changes:
+            self.ticks_since_last_economy_change = 0
+            self.station.current_trade_modifier += (random.random() - 0.5) * config['market_fluctuation']
 
     def calculatePlayers(self):
         for player in self.players:
@@ -149,9 +154,6 @@ class Game:
         json_object = json.dumps(update)
         asyncio.run(self.net_interface.broadcast(json_object))
 
-    def getState(self):
-        pass
-
     def addPlayer(self, name, player_id):
         player = Player(name, player_id, self)
         player.position = self.starting_position.copy()
@@ -232,7 +234,8 @@ class Game:
                 x = random.randint(0, self.map_size)
                 y = random.randint(0, self.map_size)
                 valid = self.isValidPlacement([x, y])
-            self.asteroids.append(Asteroid(1, [x, y]))
+            richness = max(random.random(), 0.3)
+            self.asteroids.append(Asteroid(richness, [x, y]))
 
     def sendOutdatedPriceNotification(self, player):
         update = {
@@ -244,12 +247,23 @@ class Game:
         json_object = json.dumps(update)
         asyncio.run(self.net_interface.send_message(player.id, json_object))
 
-    # checks if there's any other structure in radius of 200
     def isValidPlacement(self, position):
         for structure in self.structures:
             if ((structure.location[0] - position[0]) ** 2 + (structure.location[1] - position[1]) ** 2) ** 0.5 < 200:
                 return False
         return True
 
+    def sendMiningUpdate(self, progress, player):
+        update = {
+            "type": "mining",
+            "content": {
+                "progress": progress,
+            }
+        }
+        json_object = json.dumps(update)
+        asyncio.run(self.net_interface.send_message(player.id, json_object))
 
+    def replenishAsteroids(self):
+        for asteroid in self.asteroids:
+            asteroid.resources_left += min(self.delta_time * config['asteroid_replenish_rate'], config['max_asteroid_resources'])
 
