@@ -17,6 +17,7 @@ class Game:
         self.state = 0
         self.players = []
         self.asteroids = []
+        self.structures = []
         #self.stations = []
         self.net_interface = Server()
         self.ticks_since_last_update = 0
@@ -33,7 +34,9 @@ class Game:
         server_thread = threading.Thread(target=start_server)
         server_thread.start()
 
-        self.station = Station('PG', [self.starting_position[0] - 50, self.starting_position[1] - 50])
+        self.station = Station('PG', [self.starting_position[0] - 300, self.starting_position[1]])
+        self.structures.append(self.station.location)
+        self.structures.append(self.starting_position)
         self.delta_time = 0
         self.last_frame_time = time.time()
 
@@ -223,8 +226,12 @@ class Game:
 
     def populateAsteroids(self):
         for i in range(config['asteroid_count']):
-            x = random.randint(0, self.map_size)
-            y = random.randint(0, self.map_size)
+            valid = False
+            x, y = 0, 0
+            while not valid:
+                x = random.randint(0, self.map_size)
+                y = random.randint(0, self.map_size)
+                valid = self.isValidPlacement([x, y])
             self.asteroids.append(Asteroid(1, [x, y]))
 
     def sendOutdatedPriceNotification(self, player):
@@ -236,4 +243,13 @@ class Game:
         }
         json_object = json.dumps(update)
         asyncio.run(self.net_interface.send_message(player.id, json_object))
+
+    # checks if there's any other structure in radius of 200
+    def isValidPlacement(self, position):
+        for structure in self.structures:
+            if ((structure.location[0] - position[0]) ** 2 + (structure.location[1] - position[1]) ** 2) ** 0.5 < 200:
+                return False
+        return True
+
+
 
