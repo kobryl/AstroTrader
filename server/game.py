@@ -134,7 +134,7 @@ class Game:
             }
         for idx, asteroid in enumerate(self.asteroids):
             update["content"]["asteroids"][idx] = {
-                "location": asteroid.location,
+                "position": asteroid.location,
                 "richness": asteroid.richness,
                 "name": asteroid.name,
                 "resources_left": asteroid.resources_left,
