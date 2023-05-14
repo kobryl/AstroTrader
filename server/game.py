@@ -17,7 +17,7 @@ class Game:
         self.state = 0
         self.players = []
         self.asteroids = []
-        self.stations = []
+        #self.stations = []
         self.net_interface = Server()
         self.ticks_since_last_update = 0
         self.ticks_between_updates = config['ticks_to_update']
@@ -33,7 +33,7 @@ class Game:
         server_thread = threading.Thread(target=start_server)
         server_thread.start()
 
-        self.station = Station('PG', [0, 0])
+        self.station = Station('PG', [self.starting_position[0] - 50, self.starting_position[1] - 50])
         self.delta_time = 0
         self.last_frame_time = time.time()
 
