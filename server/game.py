@@ -66,7 +66,7 @@ class Game:
         message = json.loads(message)
         if message["type"] == "join":
             print(message)
-            self.addPlayer(message["content"]["player"]["name"], len(self.players))
+            self.addPlayer(message["content"]["player"]["name"], player_id)
         elif message["type"] == "move":
             print(message)
             player = message["content"]["player"]
@@ -121,7 +121,7 @@ class Game:
             }
         }
         for idx, player in enumerate(self.players):
-            update["content"]["players"][idx] = {
+            update["content"]["players"][player.id] = {
                 "name": player.name,
                 "position": player.position,
                 "destination": player.destination,
