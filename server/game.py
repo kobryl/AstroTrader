@@ -37,6 +37,11 @@ class Game:
         self.delta_time = 0
         self.last_frame_time = time.time()
 
+    def getPlayer(self, player_id):
+        for p in self.players:
+            if p.id == player_id:
+                return p
+
     def start(self):
         while self.state != 2:
             self.ticks_since_last_update += 1
@@ -70,15 +75,15 @@ class Game:
         elif message["type"] == "move":
             print(message)
             player = message["content"]["player"]
-            self.players[player_id].destination = player["destination"]
+            self.getPlayer(player_id).destination = player["destination"]
         elif message["type"] == "mine":
             print(message)
             asteroid_id = message["content"]["asteroid"]
-            self.asteroids[asteroid_id].mining_players.append(self.players[player_id])
-            self.players[player_id].mine()
+            self.asteroids[asteroid_id].mining_players.append(self.getPlayer(player_id))
+            self.getPlayer(player_id).mine()
         elif message["type"] == "check":
             print(message)
-            player = self.players[player_id]
+            player = self.getPlayer(player_id)
             item = player.inventory[message["content"]["item"]]
             station = self.stations[message["content"]["station"]]
             value = station.checkPrice(item)
@@ -92,7 +97,7 @@ class Game:
             asyncio.run(self.net_interface.broadcast(json_object))
         elif message["type"] == "sell":
             print(message)
-            player = self.players[player_id]
+            player = self.getPlayer(player_id)
             item = player.inventory[message["content"]["item"]]
             station = self.stations[message["content"]["station"]]
             value = station.checkPrice(item)
@@ -101,7 +106,7 @@ class Game:
                 self.sendOutdatedPriceNotification(player_id)
             self.sellItem(player, item, station)
         elif message["type"] == "disconnect":
-            player = self.players[player_id]
+            player = self.getPlayer(player_id)
             self.players.remove(player)
             print("Player " + player.name + " disconnected, player_id: " + str(player_id))
 
@@ -135,7 +140,7 @@ class Game:
                 "resources_left": asteroid.resources_left,
             }
         update["content"]["station"] = {
-            "location": self.station.location,
+            "position": self.station.location,
             "name": self.station.name,
         }
         json_object = json.dumps(update)
