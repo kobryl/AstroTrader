@@ -7,12 +7,12 @@ import websockets.exceptions
 
 from config import config
 
-INET_ADDR = config['server_address']
+IP_ADDR = config['server_address']
 IP_PORT = config['server_port']
 
 
 class Server:
-    def __init__(self):
+    def __init__(self) -> None:
         self.__clients = []
         self.__stop = asyncio.Future()
         self.__clients_lock = threading.Lock()
@@ -22,7 +22,7 @@ class Server:
         self.__threadtest = None
         self.__player_counter = 0
 
-    async def __handle_client(self, websocket, path):
+    async def __handle_client(self, websocket, path) -> None:
         print("New client connected")
         self.__clients_lock.acquire()
         player_id = self.__player_counter
@@ -39,7 +39,7 @@ class Server:
         finally:
             self.__remove_client(player_id)
 
-    def get_message(self):
+    def get_message(self) -> tuple[int, str]:
         self.__messages_lock.acquire()
         message = None
         if not self.__message_queue.empty():
@@ -49,7 +49,7 @@ class Server:
             print(f"Got message: {message}")
         return message
 
-    async def send_message(self, player_id, message):
+    async def send_message(self, player_id: int, message: str) -> None:
         if self.__clients[player_id] is not None:
             try:
                 print(f"Sending message to {player_id}: {message}")
@@ -57,7 +57,7 @@ class Server:
             except websockets.exceptions.ConnectionClosed:
                 print(f"Connection to {player_id} closed")
 
-    def __remove_client(self, player_id):
+    def __remove_client(self, player_id: int) -> None:
         self.__clients_lock.acquire()
         self.__clients[player_id] = None
         self.__clients_lock.release()
@@ -75,7 +75,7 @@ class Server:
                 except websockets.exceptions.ConnectionClosed:
                     print(f"Connection to client {client} closed")
 
-    async def __start_server(self):
+    async def __start_server(self) -> None:
         print("Running server")
         async with websockets.serve(self.__handle_client, None, IP_PORT):
             await asyncio.Future()
@@ -88,5 +88,5 @@ class Server:
         loop.create_task(self.__start_server())
         loop.run_forever()
 
-    def stop(self):
+    def stop(self) -> None:
         self.__stop.set_result(True)
