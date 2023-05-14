@@ -36,7 +36,7 @@ class Server:
                 self.__message_queue.put((player_id, message))
                 self.__messages_lock.release()
         finally:
-            self.__remove_client(websocket)
+            self.__remove_client(player_id)
 
     def get_message(self):
         self.__messages_lock.acquire()
@@ -55,11 +55,11 @@ class Server:
         except websockets.exceptions.ConnectionClosed:
             print(f"Connection to {player_id} closed")
 
-    def __remove_client(self, websocket):
+    def __remove_client(self, player_id):
         self.__clients_lock.acquire()
-        self.__clients.remove(websocket)
+        self.__clients[player_id] = None
         self.__clients_lock.release()
-        print(f"Client {websocket} disconnected, current clients: {self.__clients}")
+        print(f"Client {player_id} disconnected, current clients: {self.__clients}")
 
     async def broadcast(self, message: str) -> None:
         print(f"Broadcasting message: {message}")
