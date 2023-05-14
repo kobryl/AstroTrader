@@ -90,6 +90,20 @@ class Game:
             }
             json_object = json.dumps(update)
             asyncio.run(self.net_interface.broadcast(json_object))
+        elif message["type"] == "sell":
+            print(message)
+            player = self.players[player_id]
+            item = player.inventory[message["content"]["item"]]
+            station = self.stations[message["content"]["station"]]
+            value = station.checkPrice(item)
+            asked_price = message["content"]["price"]
+            if value != asked_price:
+                self.sendOutdatedPriceNotification(player_id)
+            self.sellItem(player, item, station)
+        elif message["type"] == "disconnect":
+            player = self.players[player_id]
+            self.players.remove(player)
+            print("Player " + player.name + " disconnected, player_id: " + str(player_id))
 
     def sendUpdates(self):
         if self.ticks_since_last_update < self.ticks_between_updates:
@@ -207,4 +221,14 @@ class Game:
             x = random.randint(0, self.map_size)
             y = random.randint(0, self.map_size)
             self.asteroids.append(Asteroid(1, [x, y]))
+
+    def sendOutdatedPriceNotification(self, player):
+        update = {
+            "type": "sell",
+            "content": {
+                "status": "outdated",
+            }
+        }
+        json_object = json.dumps(update)
+        asyncio.run(self.net_interface.send_message(player.id, json_object))
 
