@@ -8,8 +8,8 @@ config = {
     'server_address': '185.47.65.102',
     'server_port': 8001,
     'ticks_to_update': 60,
-    'map_size': 4096,
-    'player_start_x': 2048,
-    'player_start_y': 2048,
+    'map_size': 2048,
+    'player_start_x': 1024,
+    'player_start_y': 1024,
     'asteroid_count': 5,
 }
