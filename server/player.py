@@ -8,7 +8,7 @@ class Player:
         self.money = 0
         self.position = [0, 0]
         self.inventory = []
-        self.destination = [0, 0]
+        self.destination = None
         self.speed = config['default_speed']
         self.name = name
         self.id = player_id

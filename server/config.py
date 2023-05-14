@@ -1,6 +1,6 @@
 
 config = {
-    'default_speed': 10,
+    'default_speed': 100,
     'default_station_trade_modifier': 1,
     'default_asteroid_mining_modifier': 5,
     'default_asteroid_mining_radius': 320,
