@@ -46,9 +46,9 @@ class Game:
             self.calculateEconomy()
             self.calculatePlayers()
             self.sendUpdates()
-            time_of_tick = self.last_frame_time - time.time()
+            time_of_tick = time.time() - self.last_frame_time
             if time_of_tick < 0.0167:
-                time.sleep(0.01617 - time_of_tick)
+                time.sleep(max(0.00817 - time_of_tick, 0))
 
     def calculateEconomy(self):
         self.station.current_trade_modifier += random.random() * config['market_fluctuation']
