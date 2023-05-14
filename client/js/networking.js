@@ -72,23 +72,23 @@ function sendMoveToDestination(dest) {
 function handleUpdate(content) { 
     const players = content.players;
     for (const [id, playerData] of Object.entries(players)) {
-        console.log("Updating player: " + id + " with data: ");
-        console.log(playerData);
+        // console.log("Updating player: " + id + " with data: ");
+        // console.log(playerData);
         updatePlayer(id, playerData);
     }
 
     const asteroids = content.asteroids;
     for (const [id, asteroidData] of Object.entries(asteroids)) {
-        console.log("Updating asteroid: " + id + " with data: ");
-        console.log(asteroidData);
+        // console.log("Updating asteroid: " + id + " with data: ");
+        // console.log(asteroidData);
         updateAsteroid(id, asteroidData);
     }
 
     // const stations = content.stations;                  (multiple stations implementation)
     const stations = new Array(content.station);        // (single station implementation)
     for (const [id, stationData] of Object.entries(stations)) {
-        console.log("Updating station: " + id + " with data: ");
-        console.log(stationData);
+        // console.log("Updating station: " + id + " with data: ");
+        // console.log(stationData);
         updateStation(id, stationData);
     }
 }

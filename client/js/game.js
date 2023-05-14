@@ -10,6 +10,7 @@ let playerCompass;
 let players = [];
 let stations = [];
 let asteroids = [];
+let playerItems = [];
 
 
 // Initialization functions
@@ -58,7 +59,7 @@ function movePlayers() {
                 player.destinationPoint = null;
                 player.movementTarget.visible = false;
                 if (player === clientPlayer && player.interactionObject) {
-                    openObjectMenu(player.interactionObject);
+                    player.interactionObject.openMenu();
                 }
                 player.interactionObject = null;
             }
@@ -189,6 +190,6 @@ function moveToObject(object) {
         closeActiveMenu();
     }
     else {
-        openObjectMenu(object);
+        object.openMenu();
     }
 }

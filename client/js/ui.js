@@ -32,35 +32,21 @@ function onCloseActiveMenuClick() {
     closeActiveMenu();
 }
 
+function onMineClick(id) {
+    // todo: implement
+    console.log("Mining asteroid " + id);
+}
+
+function onCheckClick(items) {
+    // todo: implement
+    console.log("Checking items " + items);
+}
+
 
 // UI drawing functions
 
-function openObjectMenu(object) {
-    if (object instanceof Asteroid) {
-        openAsteroidMenu(object);
-    } else if (object instanceof Station) {
-        openStationMenu(object);
-    }
-}
-
 function closeActiveMenu() {
     document.querySelector("#active-menu").style.display = 'none';
-}
-
-function openAsteroidMenu(asteroid) {
-    const menu = document.querySelector("#active-menu");
-    menu.style.display = 'initial';
-    menu.querySelector(".object-name").innerHTML = asteroid.name;
-    menu.querySelector(".object-id").innerHTML = asteroid.id;
-    menu.querySelector(".object-type").innerHTML = "Asteroid";
-}
-
-function openStationMenu(station) {
-    const menu = document.querySelector("#active-menu");
-    menu.style.display = 'initial';
-    menu.querySelector(".object-name").innerHTML = station.name;
-    menu.querySelector(".object-id").innerHTML = station.id;
-    menu.querySelector(".object-type").innerHTML = "Station";
 }
 
 function fadeOutLanding() {
@@ -80,7 +66,7 @@ function setHudVisibility(isVisible) {
     }
 }
 
-function updatePlayerCoordsHud(x, y, precision = 0) {
-    document.querySelector("#player-coords-x .coords-value").innerHTML = Math.round(x, precision);
-    document.querySelector("#player-coords-y .coords-value").innerHTML = Math.round(y, precision);
+function updatePlayerCoordsHud(x, y) {
+    document.querySelector("#player-coords-x .coords-value").innerHTML = Math.round(x);
+    document.querySelector("#player-coords-y .coords-value").innerHTML = Math.round(y);
 }
