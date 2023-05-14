@@ -27,10 +27,16 @@ class Server:
         self.__clients.append(websocket)
         self.__clients_lock.release()
         print(f"Current clients: {self.__clients}")
-        async for message in websocket:
-            self.__messages_lock.acquire()
-            self.__message_queue.put((player_id, message))
-            self.__messages_lock.release()
+        try:
+            async for message in websocket:
+                self.__messages_lock.acquire()
+                self.__message_queue.put((player_id, message))
+                self.__messages_lock.release()
+        finally:
+            self.__clients_lock.acquire()
+            self.__clients.remove(websocket)
+            self.__clients_lock.release()
+            print(f"Client disconnected, current clients: {self.__clients}")
 
     def get_message(self):
         player_id = len(self.__clients)
