@@ -85,7 +85,7 @@ class Game:
             print(message)
             player = self.getPlayer(player_id)
             item = player.inventory[message["content"]["item"]]
-            station = self.stations[message["content"]["station"]]
+            station = self.station # self.stations[message["content"]["station"]]
             value = station.checkPrice(item)
             update = {
                 "type": "check",
@@ -99,11 +99,11 @@ class Game:
             print(message)
             player = self.getPlayer(player_id)
             item = player.inventory[message["content"]["item"]]
-            station = self.stations[message["content"]["station"]]
+            station = self.station # self.stations[message["content"]["station"]]
             value = station.checkPrice(item)
             asked_price = message["content"]["price"]
             if value != asked_price:
-                self.sendOutdatedPriceNotification(player_id)
+                self.sendOutdatedPriceNotification(player)
             self.sellItem(player, item, station)
         elif message["type"] == "disconnect":
             player = self.getPlayer(player_id)
@@ -125,7 +125,7 @@ class Game:
                 "server_delta_time": self.delta_time,
             }
         }
-        for idx, player in enumerate(self.players):
+        for player in self.players:
             update["content"]["players"][player.id] = {
                 "name": player.name,
                 "position": player.position,
@@ -151,7 +151,7 @@ class Game:
 
     def addPlayer(self, name, player_id):
         player = Player(name, player_id, self)
-        player.position = self.starting_position
+        player.position = self.starting_position.copy()
         self.players.append(player)
         update = {
             "type": "connection",
