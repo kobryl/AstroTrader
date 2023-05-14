@@ -85,7 +85,8 @@ class Game:
             "content": {
                 "players": {},
                 "asteroids": {},
-                "station": {}
+                "station": {},
+                "server_delta_time": self.delta_time,
             }
         }
         for idx, player in enumerate(self.players):
