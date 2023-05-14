@@ -4,14 +4,15 @@ from config import config
 
 
 class Player:
-    def __init__(self, name, id):
+    def __init__(self, name, player_id, game):
         self.money = 0
         self.position = [0, 0]
         self.inventory = []
         self.destination = [0, 0]
         self.speed = config['default_speed']
         self.name = name
-        self.id = id
+        self.id = player_id
+        self.game = game
 
     def move(self, delta_time):
         if self.destination == self.position:
@@ -36,4 +37,4 @@ class Player:
         self.speed = speed
 
     def addToInventory(self, item):
-        self.inventory.append(item)
+        self.game.giveItem(self, item)

@@ -2,6 +2,7 @@ import threading
 
 from player import Player
 from config import config
+from server.asteroid import Asteroid
 from station import Station
 from interface import Server
 import json
@@ -15,9 +16,13 @@ class Game:
     def __init__(self):
         self.state = 0
         self.players = []
+        self.asteroids = []
         self.net_interface = Server()
         self.ticks_since_last_update = 0
-
+        self.ticks_between_updates = config['ticks_to_update']
+        self.map_size = config['map_size']
+        self.starting_position = [config['player_start_x'], config['player_start_y']]
+        self.populateAsteroids()
 
         # Define a new function that will start the server in a new thread
         def start_server():
@@ -26,7 +31,6 @@ class Game:
         # Create a new thread and start the server within the new thread
         server_thread = threading.Thread(target=start_server)
         server_thread.start()
-
 
         self.station = Station('PG', [0, 0])
         self.delta_time = 0
@@ -41,8 +45,9 @@ class Game:
             self.calculateEconomy()
             self.calculatePlayers()
             self.sendUpdates()
-            time.sleep(0.5)
-
+            time_of_tick = self.last_frame_time - time.time()
+            if time_of_tick < 0.0167:
+                time.sleep(0.01617 - time_of_tick)
 
     def calculateEconomy(self):
         self.station.current_trade_modifier += random.random() * config['market_fluctuation']
@@ -57,7 +62,6 @@ class Game:
             return
         player_id = message[0]
         message = message[1]
-        print(message)
         message = json.loads(message)
         if message["type"] == "join":
             print(message)
@@ -66,15 +70,22 @@ class Game:
             print(message)
             player = message["content"]["player"]
             self.players[player_id].destination = player["destination"]
-
+        if message["type"] == "mine":
+            print(message)
+            asteroid_id = message["content"]["asteroid"]
+            self.asteroids[asteroid_id].mining_players.append(self.players[player_id])
+            self.players[player_id].mine()
 
     def sendUpdates(self):
-        if self.ticks_since_last_update < 10:
+        if self.ticks_since_last_update < self.ticks_between_updates:
             return
+        self.ticks_since_last_update = 0
         update = {
             "type": "update",
             "content": {
-                "players":{}
+                "players": {},
+                "asteroids": {},
+                "station": {}
             }
         }
         for idx, player in enumerate(self.players):
@@ -84,12 +95,81 @@ class Game:
                 "destination": player.destination,
                 "speed": player.speed,
             }
-            json_object = json.dumps(update)
-            asyncio.run(self.net_interface.broadcast(json_object))
+        for idx, asteroid in enumerate(self.asteroids):
+            update["content"]["asteroids"][idx] = {
+                "location": asteroid.location,
+                "richness": asteroid.richness,
+                "name": asteroid.name,
+                "resources_left": asteroid.resources_left,
+            }
+        update["content"]["station"] = {
+            "location": self.station.location,
+            "name": self.station.name,
+        }
+        json_object = json.dumps(update)
+        asyncio.run(self.net_interface.broadcast(json_object))
 
     def getState(self):
         pass
 
-    def addPlayer(self, name, id):
-        player = Player(name, id)
+    def addPlayer(self, name, player_id):
+        player = Player(name, player_id, self)
+        player.position = self.starting_position
         self.players.append(player)
+
+    def giveItem(self, player, item):
+        player.inventory.append(item)
+        update = {
+            "type": "item",
+            "content": {
+                "action": "add",
+                "name": item.name,
+                "value": item.value,
+                "id": item.id,
+            }
+        }
+        json_object = json.dumps(update)
+        asyncio.run(self.net_interface.send_message(player.id, json_object))
+
+    def removeItem(self, player, item):
+        player.inventory.remove(item)
+        update = {
+            "type": "item",
+            "content": {
+                "action": "remove",
+                "id": item.id,
+            }
+        }
+        json_object = json.dumps(update)
+        asyncio.run(self.net_interface.send_message(player.id, json_object))
+
+    def addMoney(self, player, amount):
+        player.money += amount
+        update = {
+            "type": "money",
+            "content": {
+                "action": "add",
+                "amount": amount,
+            }
+        }
+        json_object = json.dumps(update)
+        asyncio.run(self.net_interface.send_message(player.id, json_object))
+
+    def removeMoney(self, player, amount):
+        player.money -= amount
+        update = {
+            "type": "money",
+            "content": {
+                "action": "remove",
+                "amount": amount,
+            }
+        }
+        json_object = json.dumps(update)
+        asyncio.run(self.net_interface.send_message(player.id, json_object))
+
+    def populateAsteroids(self):
+        for i in range(config['asteroid_count']):
+            x = random.randint(0, self.map_size)
+            y = random.randint(0, self.map_size)
+            self.asteroids.append(Asteroid(1, [x, y]))
+
