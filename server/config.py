@@ -7,7 +7,7 @@ config = {
     'market_fluctuation': 0.0001,
     'server_address': '185.47.65.102',
     'server_port': 8001,
-    'ticks_to_update': 180,
+    'ticks_to_update': 60,
     'map_size': 4096,
     'player_start_x': 2048,
     'player_start_y': 2048,

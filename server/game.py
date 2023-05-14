@@ -17,6 +17,7 @@ class Game:
         self.state = 0
         self.players = []
         self.asteroids = []
+        self.stations = []
         self.net_interface = Server()
         self.ticks_since_last_update = 0
         self.ticks_between_updates = config['ticks_to_update']
@@ -63,6 +64,7 @@ class Game:
         player_id = message[0]
         message = message[1]
         message = json.loads(message)
+        player = self.players[player_id]
         if message["type"] == "join":
             print(message)
             self.addPlayer(message["content"]["player"]["name"], len(self.players))
@@ -75,6 +77,19 @@ class Game:
             asteroid_id = message["content"]["asteroid"]
             self.asteroids[asteroid_id].mining_players.append(self.players[player_id])
             self.players[player_id].mine()
+        if message["type"] == "check":
+            print(message)
+            item = player.inventory[message["content"]["item"]]
+            station = self.stations[message["content"]["station"]]
+            value = station.checkPrice(item)
+            update = {
+                "type": "check",
+                "content": {
+                    "value": str(value),
+                }
+            }
+            json_object = json.dumps(update)
+            asyncio.run(self.net_interface.broadcast(json_object))
 
     def sendUpdates(self):
         if self.ticks_since_last_update < self.ticks_between_updates:
@@ -117,6 +132,15 @@ class Game:
         player = Player(name, player_id, self)
         player.position = self.starting_position
         self.players.append(player)
+        update = {
+            "type": "connection",
+            "content": {
+                "status": "ok",
+                "id": player_id,
+            }
+        }
+        json_object = json.dumps(update)
+        asyncio.run(self.net_interface.send_message(player.id, json_object))
 
     def giveItem(self, player, item):
         player.inventory.append(item)
@@ -143,6 +167,14 @@ class Game:
         }
         json_object = json.dumps(update)
         asyncio.run(self.net_interface.send_message(player.id, json_object))
+
+    def checkPrice(self, station, item):
+        return station.checkPrice(item)
+
+    def sellItem(self, player, item, station):
+        value = station.buyFromPlayer(item)
+        self.removeItem(player, item)
+        self.addMoney(player, item.value)
 
     def addMoney(self, player, amount):
         player.money += amount

@@ -18,11 +18,13 @@ class Server:
         self.__websocket_server = None
         self.__message_queue = queue.Queue()
         self.__threadtest = None
+        self.__player_counter = 0
 
     async def __handle_client(self, websocket, path):
         print("New client connected")
         self.__clients_lock.acquire()
-        player_id = len(self.__clients)
+        player_id = self.__player_counter
+        self.__player_counter += 1
         print(f"Assigned player id {player_id}")
         self.__clients.append(websocket)
         self.__clients_lock.release()
