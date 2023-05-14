@@ -49,11 +49,12 @@ class Server:
         return message
 
     async def send_message(self, player_id, message):
-        try:
-            print(f"Sending message to {player_id}: {message}")
-            await self.__clients[player_id].send(message)
-        except websockets.exceptions.ConnectionClosed:
-            print(f"Connection to {player_id} closed")
+        if self.__clients[player_id] is not None:
+            try:
+                print(f"Sending message to {player_id}: {message}")
+                await self.__clients[player_id].send(message)
+            except websockets.exceptions.ConnectionClosed:
+                print(f"Connection to {player_id} closed")
 
     def __remove_client(self, player_id):
         self.__clients_lock.acquire()
@@ -64,10 +65,11 @@ class Server:
     async def broadcast(self, message: str) -> None:
         print(f"Broadcasting message: {message}")
         for client in self.__clients:
-            try:
-                await client.send(message)
-            except websockets.exceptions.ConnectionClosed:
-                print(f"Connection to client {client} closed")
+            if client is not None:
+                try:
+                    await client.send(message)
+                except websockets.exceptions.ConnectionClosed:
+                    print(f"Connection to client {client} closed")
 
     async def __start_server(self):
         print("Running server")
