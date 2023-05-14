@@ -5,6 +5,7 @@ function onResize() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    initGame();
     document.querySelector("#canvas-container").appendChild(game.view);
     window.addEventListener("resize", onResize);
     onResize();

@@ -8,7 +8,7 @@ const Config = {
     PLAYER_START_X: 2048,
     PLAYER_START_Y: 2048,
     PLAYER_INITIAL_ROTATION: 0,
-    PLAYER_SPEED: 5.0,
+    PLAYER_SPEED: 0.25,
     PLAYER_ROTATION_SPEED: 0.025,
     PLAYER_ROTATION_OFFSET: Math.PI * 0.25,
     PLAYER_MOVE_STOP_DISTANCE: 2,
@@ -52,7 +52,8 @@ const Config = {
 const ServerMessages = {
     JOIN: "join",
     MOVE: "move",
-    UPDATE: "update"
+    UPDATE: "update",
+    CONFIRM_CONNECTION: "connection"
 }
 
 

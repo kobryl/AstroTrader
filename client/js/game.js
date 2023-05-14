@@ -7,17 +7,14 @@ game.view.id = "game-canvas";
 
 let clientPlayer;
 let playerCompass;
-let otherPlayers = [];
-let keys = [];              // redundant, leftovers from keyboard-based movement
+let players = [];
 let stations = [];
 let asteroids = [];
 
-init();
 
+// Initialization functions
 
-// Main functions
-
-function init() {
+function initGame() {
     game.stage.pivot.x = Config.PLAYER_START_X;
     game.stage.pivot.y = Config.PLAYER_START_Y;
     game.stage.position.x = window.innerWidth / (2 * devicePixelRatio);
@@ -27,13 +24,11 @@ function init() {
     drawInitialScene();
 }
 
-function initPlayers() {
-    clientPlayer = new Player(getPlayerName(), Config.PLAYER_START_X, Config.PLAYER_START_Y);
-    addPlayerObjectsToStage(clientPlayer);
-    // todo: others from server data
+function initClientPlayer(clientId) {
+    clientPlayer = players.find(player => player.id == clientId);
 }
 
-function initObjects() {        // initObjects(data) { ... }
+function initObjects() {
     // temporary, for testing
     asteroids.push(new Asteroid("Ceres", 0, 2300, 2300));
     asteroids.push(new Asteroid("Pallas", 1, 2800, 1600));
@@ -48,14 +43,15 @@ function initObjects() {        // initObjects(data) { ... }
     });
 }
 
-function startGame() {
+
+// Main functions
+
+function startGame(clientId) {
     playerCompass = new PlayerCompass(Config.PLAYER_START_X, Config.PLAYER_START_Y);
-    initObjects();              // from someServerData as parameter
-    initPlayers();              // from someServerData as parameter
+    initObjects();
+    initClientPlayer(clientId);
     game.ticker.add(gameLoop);
     game.stage.addEventListener("click", onClick);
-    window.addEventListener("keydown", keyDown);
-    window.addEventListener("keyup", keyUp);
     setHudVisibility(true);
 }
 
@@ -69,10 +65,9 @@ function gameLoop() {
 }
 
 function movePlayers() {
-    let movingPlayers = otherPlayers.concat(clientPlayer);
-    movingPlayers.forEach(player => {
+    players.forEach(player => {
         if (player.destinationPoint) { 
-            player.moveTowardsDestination();
+            player.moveTowardsDestination(serverDeltaTime, game.ticker.deltaMS / 1000);
             player.clampCoords();
             player.redrawMovementTargetLine();
             if (player.isDestinationReached()) {
@@ -87,6 +82,19 @@ function movePlayers() {
     });
 }
 
+function updatePlayer(id, data) {
+    let player = players.find(player => player.id == id);
+    if (player) {
+        player.update(data);
+    } else {
+        console.log("Creating a new player: " + id + " with data:");
+        console.log(data);
+        player = new Player(id, data.name, data.position[0], data.position[1]);
+        players.push(player);
+        addPlayerObjectsToStage(player);
+    }
+}
+
 
 // Event handlers
 
@@ -94,17 +102,7 @@ function onClick(e) {
     if (e.global.x < 0 || e.global.x > Config.MAP_SIZE || e.global.y < 0 || e.global.y > Config.map_size) return;
     clientPlayer.startMovingToPoint(game.stage.toLocal(e.global));
     clientPlayer.interactionObject = null;
-    // todo: send to server
-}
-
-// redundant, leftover from keyboard-based movement
-function keyDown(e) {
-    keys[e.keyCode] = true;
-}
-
-// redundant, leftover from keyboard-based movement
-function keyUp(e) {
-    keys[e.keyCode] = false;
+    sendMoveToDestination(clientPlayer.destinationPoint);
 }
 
 

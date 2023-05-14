@@ -1,5 +1,6 @@
 class Player {
-    constructor(name, x, y) {
+    constructor(id, name, x, y) {
+        this.id = id;
         this.name = name;
         this.ship = null;
         this.nameTag = null;
@@ -36,6 +37,15 @@ class Player {
         game.stage.addChild(this.nameTag);
     }
 
+    update(data) {
+        this.name = data.name;
+        this.setPos(data.position[0], data.position[1]);
+        // todo: destination
+    }
+
+
+    // Movement methods
+
     setPos(x, y) {
         this.x = x;
         this.y = y;
@@ -54,12 +64,12 @@ class Player {
         this.nameTag.y += y;
     }
 
-    moveTowardsDestination() {
+    moveTowardsDestination(serverDeltaTime, clientDeltaTime) {
         const dx = this.destinationPoint.x - this.x;
         const dy = this.destinationPoint.y - this.y;
         const angle = Math.atan2(dy, dx);
-        const x = Config.PLAYER_SPEED * Math.cos(angle) * game.ticker.deltaTime;
-        const y = Config.PLAYER_SPEED * Math.sin(angle) * game.ticker.deltaTime;
+        const x = Config.PLAYER_SPEED * Math.cos(angle) * (serverDeltaTime / clientDeltaTime);
+        const y = Config.PLAYER_SPEED * Math.sin(angle) * (serverDeltaTime / clientDeltaTime);
         this.ship.rotation = angle + Config.PLAYER_ROTATION_OFFSET;
         this.moveBy(x, y);
     }
@@ -68,7 +78,6 @@ class Player {
         this.destinationPoint = point;
         this.showMovementTarget();
         this.redrawMovementTargetLine();
-        sendMoveToDestination(this.destinationPoint);
     }
 
     clampCoords() {
@@ -90,6 +99,9 @@ class Player {
         }
     }
 
+
+    // Drawing methods
+
     showMovementTarget() {
         this.movementTarget.visible = true;
         this.movementTarget.x = this.destinationPoint.x;
@@ -103,6 +115,9 @@ class Player {
         this.movementTargetLine.lineTo(this.destinationPoint.x, this.destinationPoint.y);
         this.movementTargetLine.alpha = Config.MOVEMENT_TARGET_LINE_ALPHA;
     }
+
+
+    // Helper methods
         
     isDestinationReached() {
         return this.x > this.destinationPoint.x - Config.PLAYER_MOVE_STOP_DISTANCE && 
