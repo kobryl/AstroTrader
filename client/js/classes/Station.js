@@ -4,4 +4,9 @@ class Station extends InteractableObject {
         this.name = name;
         this.id = id;
     }
+
+    update(data) {
+        super.update(data);
+        this.name = data.name;
+    }
 }

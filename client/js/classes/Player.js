@@ -40,7 +40,15 @@ class Player {
     update(data) {
         this.name = data.name;
         this.setPos(data.position[0], data.position[1]);
-        // todo: destination
+        if (data.destination) {
+            const point = new PIXI.Point(data.destination[0], data.destination[1]);
+            this.startMovingToPoint(point);
+        }
+        else {
+            this.destinationPoint = null;
+            this.movementTarget.visible = false;
+            this.interactionObject = null;
+        }
     }
 
 

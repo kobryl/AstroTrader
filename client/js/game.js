@@ -22,33 +22,17 @@ function initGame() {
     game.stage.eventMode = "static";
     game.stage.hitArea = new PIXI.Rectangle(0, 0, Config.MAP_SIZE, Config.MAP_SIZE);
     drawInitialScene();
+    playerCompass = new PlayerCompass(Config.PLAYER_START_X, Config.PLAYER_START_Y);
 }
 
 function initClientPlayer(clientId) {
     clientPlayer = players.find(player => player.id == clientId);
 }
 
-function initObjects() {
-    // temporary, for testing
-    asteroids.push(new Asteroid("Ceres", 0, 2300, 2300));
-    asteroids.push(new Asteroid("Pallas", 1, 2800, 1600));
-    asteroids.forEach(asteroid => {
-        playerCompass.addObject(asteroid);
-    });
-
-    stations.push(new Station("Orion-3", 0, 1500, 2000));
-    stations.push(new Station("Leo-15", 1, 3000, 3000));
-    stations.forEach(station => {
-        playerCompass.addObject(station);
-    });
-}
-
 
 // Main functions
 
 function startGame(clientId) {
-    playerCompass = new PlayerCompass(Config.PLAYER_START_X, Config.PLAYER_START_Y);
-    initObjects();
     initClientPlayer(clientId);
     game.ticker.add(gameLoop);
     game.stage.addEventListener("click", onClick);
@@ -92,6 +76,32 @@ function updatePlayer(id, data) {
         player = new Player(id, data.name, data.position[0], data.position[1]);
         players.push(player);
         addPlayerObjectsToStage(player);
+    }
+}
+
+function updateAsteroid(id, data) {
+    let asteroid = asteroids.find(asteroid => asteroid.id == id);
+    if (asteroid) {
+        asteroid.update(data);
+    } else {
+        console.log("Creating a new asteroid: " + id + " with data:");
+        console.log(data);
+        asteroid = new Asteroid(data.name, id, data.position[0], data.position[1], data.resoruces_left, data.richness);
+        asteroids.push(asteroid);
+        playerCompass.addObject(asteroid);
+    }
+}
+
+function updateStation(id, data) {
+    let station = stations.find(station => station.id == id);
+    if (station) {
+        station.update(data);
+    } else {
+        console.log("Creating a new station: " + id + " with data:");
+        console.log(data);
+        station = new Station(data.name, id, data.position[0], data.position[1], data.resources_left, data.richness);
+        stations.push(station);
+        playerCompass.addObject(station);
     }
 }
 

@@ -76,4 +76,19 @@ function handleUpdate(content) {
         console.log(playerData);
         updatePlayer(id, playerData);
     }
+
+    const asteroids = content.asteroids;
+    for (const [id, asteroidData] of Object.entries(asteroids)) {
+        console.log("Updating asteroid: " + id + " with data: ");
+        console.log(asteroidData);
+        updateAsteroid(id, asteroidData);
+    }
+
+    // const stations = content.stations;                  (multiple stations implementation)
+    const stations = new Array(content.station);        // (single station implementation)
+    for (const [id, stationData] of Object.entries(stations)) {
+        console.log("Updating station: " + id + " with data: ");
+        console.log(stationData);
+        updateStation(id, stationData);
+    }
 }

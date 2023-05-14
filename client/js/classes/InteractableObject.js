@@ -47,4 +47,8 @@ class InteractableObject {
         e.stopPropagation();
         moveToObject(this);
     }
+
+    update(data) {
+        this.setPos(data.position[0], data.position[1]);
+    }
 }
