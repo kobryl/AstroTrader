@@ -23,8 +23,7 @@ class Server:
     async def __handle_client(self, websocket, path):
         print("New client connected")
         self.__clients_lock.acquire()
-        player_id = self.__player_counter
-        self.__player_counter += 1
+        player_id = len(self.__clients)
         print(f"Assigned player id {player_id}")
         self.__clients.append(websocket)
         self.__clients_lock.release()

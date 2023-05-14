@@ -64,21 +64,21 @@ class Game:
         player_id = message[0]
         message = message[1]
         message = json.loads(message)
-        player = self.players[player_id]
         if message["type"] == "join":
             print(message)
             self.addPlayer(message["content"]["player"]["name"], len(self.players))
-        if message["type"] == "move":
+        elif message["type"] == "move":
             print(message)
             player = message["content"]["player"]
             self.players[player_id].destination = player["destination"]
-        if message["type"] == "mine":
+        elif message["type"] == "mine":
             print(message)
             asteroid_id = message["content"]["asteroid"]
             self.asteroids[asteroid_id].mining_players.append(self.players[player_id])
             self.players[player_id].mine()
-        if message["type"] == "check":
+        elif message["type"] == "check":
             print(message)
+            player = self.players[player_id]
             item = player.inventory[message["content"]["item"]]
             station = self.stations[message["content"]["station"]]
             value = station.checkPrice(item)
@@ -93,6 +93,8 @@ class Game:
 
     def sendUpdates(self):
         if self.ticks_since_last_update < self.ticks_between_updates:
+            return
+        if len(self.players) == 0:
             return
         self.ticks_since_last_update = 0
         update = {
