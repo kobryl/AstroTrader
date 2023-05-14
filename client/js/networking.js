@@ -2,7 +2,6 @@ let socket = null;
 let waitingForFirstUpdate = false;
 let waitingForConfirmation = true;
 let assignedClientId = null;
-let serverDeltaTime = 0;
 
 
 // Message handling functions
@@ -71,7 +70,6 @@ function sendMoveToDestination(dest) {
 
 function handleUpdate(content) { 
     const players = content.players;
-    serverDeltaTime = content.server_delta_time;
     for (const [id, playerData] of Object.entries(players)) {
         console.log("Updating player: " + id + " with data: ");
         console.log(playerData);

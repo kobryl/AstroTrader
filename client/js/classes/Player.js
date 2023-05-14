@@ -64,12 +64,12 @@ class Player {
         this.nameTag.y += y;
     }
 
-    moveTowardsDestination(serverDeltaTime, clientDeltaTime) {
+    moveTowardsDestination(clientDeltaTime) {
         const dx = this.destinationPoint.x - this.x;
         const dy = this.destinationPoint.y - this.y;
         const angle = Math.atan2(dy, dx);
-        const x = Config.PLAYER_SPEED * Math.cos(angle) * serverDeltaTime * (clientDeltaTime / serverDeltaTime);
-        const y = Config.PLAYER_SPEED * Math.sin(angle) * serverDeltaTime * (clientDeltaTime / serverDeltaTime);
+        const x = Config.PLAYER_SPEED * Math.cos(angle) * clientDeltaTime;
+        const y = Config.PLAYER_SPEED * Math.sin(angle) * clientDeltaTime;
         this.ship.rotation = angle + Config.PLAYER_ROTATION_OFFSET;
         this.moveBy(x, y);
     }

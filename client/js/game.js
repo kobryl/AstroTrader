@@ -67,7 +67,7 @@ function gameLoop() {
 function movePlayers() {
     players.forEach(player => {
         if (player.destinationPoint) { 
-            player.moveTowardsDestination(serverDeltaTime, game.ticker.deltaMS / 1000);
+            player.moveTowardsDestination(game.ticker.deltaMS / 1000);
             player.clampCoords();
             player.redrawMovementTargetLine();
             if (player.isDestinationReached()) {
