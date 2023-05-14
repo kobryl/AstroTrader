@@ -2,6 +2,7 @@ import queue
 import websockets
 import asyncio
 import threading
+import websockets.exceptions
 
 from config import config
 
@@ -35,13 +36,9 @@ class Server:
                 self.__message_queue.put((player_id, message))
                 self.__messages_lock.release()
         finally:
-            self.__clients_lock.acquire()
-            self.__clients.remove(websocket)
-            self.__clients_lock.release()
-            print(f"Client disconnected, current clients: {self.__clients}")
+            self.__remove_client(websocket)
 
     def get_message(self):
-        player_id = len(self.__clients)
         self.__messages_lock.acquire()
         message = None
         if not self.__message_queue.empty():
@@ -52,13 +49,25 @@ class Server:
         return message
 
     async def send_message(self, player_id, message):
-        print(f"Sending message to {player_id}: {message}")
-        await self.__clients[player_id].send(message)
+        try:
+            print(f"Sending message to {player_id}: {message}")
+            await self.__clients[player_id].send(message)
+        except websockets.exceptions.ConnectionClosed:
+            print(f"Connection to {player_id} closed")
+
+    def __remove_client(self, websocket):
+        self.__clients_lock.acquire()
+        self.__clients.remove(websocket)
+        self.__clients_lock.release()
+        print(f"Client {websocket} disconnected, current clients: {self.__clients}")
 
     async def broadcast(self, message: str) -> None:
         print(f"Broadcasting message: {message}")
         for client in self.__clients:
-            await client.send(message)
+            try:
+                await client.send(message)
+            except websockets.exceptions.ConnectionClosed:
+                print(f"Connection to client {client} closed")
 
     async def __start_server(self):
         print("Running server")
