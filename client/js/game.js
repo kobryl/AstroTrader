@@ -103,6 +103,7 @@ function onClick(e) {
     clientPlayer.startMovingToPoint(game.stage.toLocal(e.global));
     clientPlayer.interactionObject = null;
     sendMoveToDestination(clientPlayer.destinationPoint);
+    closeActiveMenu();
 }
 
 
@@ -174,6 +175,8 @@ function moveToObject(object) {
         dest.y -= Math.sin(angle) * Config.OBJECT_INTERACTION_DISTANCE;
         clientPlayer.startMovingToPoint(dest);
         clientPlayer.interactionObject = object;
+        sendMoveToDestination(clientPlayer.destinationPoint);
+        closeActiveMenu();
     }
     else {
         openObjectMenu(object);

@@ -24,6 +24,7 @@ function handleMessage(message) {
                 startGame(assignedClientId);
                 setHudVisibility(true);
                 fadeOutLanding();
+                console.log("Got first update, starting game");
             }
             break;
         case ServerMessages.CONFIRM_CONNECTION:
@@ -32,7 +33,7 @@ function handleMessage(message) {
                 waitingForFirstUpdate = true;
                 waitingForConfirmation = false;
                 assignedClientId = data.content.id;
-                console.log("client id: " + assignedClientId);
+                console.log("Client id: " + assignedClientId);
             }
             break;
     }
