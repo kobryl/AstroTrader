@@ -1,3 +1,4 @@
+import json
 import queue
 import websockets
 import asyncio
@@ -61,6 +62,9 @@ class Server:
         self.__clients[player_id] = None
         self.__clients_lock.release()
         print(f"Client {player_id} disconnected, current clients: {self.__clients}")
+        self.__messages_lock.acquire()
+        self.__message_queue.put((player_id, json.dumps({"type": "disconnect"})))
+        self.__messages_lock.release()
 
     async def broadcast(self, message: str) -> None:
         print(f"Broadcasting message: {message}")
