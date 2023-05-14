@@ -67,7 +67,7 @@ function gameLoop() {
 function movePlayers() {
     players.forEach(player => {
         if (player.destinationPoint) { 
-            player.moveTowardsDestination(serverDeltaTime, game.ticker.deltaMS / 1000);
+            player.moveTowardsDestination(game.ticker.deltaMS / 1000);
             player.clampCoords();
             player.redrawMovementTargetLine();
             if (player.isDestinationReached()) {
@@ -103,6 +103,7 @@ function onClick(e) {
     clientPlayer.startMovingToPoint(game.stage.toLocal(e.global));
     clientPlayer.interactionObject = null;
     sendMoveToDestination(clientPlayer.destinationPoint);
+    closeActiveMenu();
 }
 
 
@@ -174,6 +175,8 @@ function moveToObject(object) {
         dest.y -= Math.sin(angle) * Config.OBJECT_INTERACTION_DISTANCE;
         clientPlayer.startMovingToPoint(dest);
         clientPlayer.interactionObject = object;
+        sendMoveToDestination(clientPlayer.destinationPoint);
+        closeActiveMenu();
     }
     else {
         openObjectMenu(object);

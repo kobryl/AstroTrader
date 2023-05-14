@@ -2,7 +2,6 @@ let socket = null;
 let waitingForFirstUpdate = false;
 let waitingForConfirmation = true;
 let assignedClientId = null;
-let serverDeltaTime = 0;
 
 
 // Message handling functions
@@ -25,6 +24,7 @@ function handleMessage(message) {
                 startGame(assignedClientId);
                 setHudVisibility(true);
                 fadeOutLanding();
+                console.log("Got first update, starting game");
             }
             break;
         case ServerMessages.CONFIRM_CONNECTION:
@@ -33,7 +33,7 @@ function handleMessage(message) {
                 waitingForFirstUpdate = true;
                 waitingForConfirmation = false;
                 assignedClientId = data.content.id;
-                console.log("client id: " + assignedClientId);
+                console.log("Client id: " + assignedClientId);
             }
             break;
     }
@@ -71,7 +71,6 @@ function sendMoveToDestination(dest) {
 
 function handleUpdate(content) { 
     const players = content.players;
-    serverDeltaTime = content.server_delta_time;
     for (const [id, playerData] of Object.entries(players)) {
         console.log("Updating player: " + id + " with data: ");
         console.log(playerData);
