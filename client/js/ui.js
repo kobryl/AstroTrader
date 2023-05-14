@@ -28,8 +28,8 @@ function handleConnectClick() {
     connect(address, username);
 }
 
-function closeActiveMenu() {
-    document.querySelector("#active-menu").style.display = 'none';
+function onCloseActiveMenuClick() {
+    closeActiveMenu();
 }
 
 
@@ -41,6 +41,10 @@ function openObjectMenu(object) {
     } else if (object instanceof Station) {
         openStationMenu(object);
     }
+}
+
+function closeActiveMenu() {
+    document.querySelector("#active-menu").style.display = 'none';
 }
 
 function openAsteroidMenu(asteroid) {
