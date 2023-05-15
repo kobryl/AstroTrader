@@ -33,7 +33,7 @@ class PlayerCompass {
             object.arrow.rotation = angle + Config.COMPASS_ARROW_ROTATION_OFFSET;
             object.label.x = x;
             object.label.y = y + Config.COMPASS_LABEL_OFFSET;
-            object.label.text = Math.round(dist, 0);
+            object.label.text = Math.round(dist);
             
             let alpha = 1;
             if (dist <= Config.COMPASS_COMPLETE_FADE_DISTANCE) {

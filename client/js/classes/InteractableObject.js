@@ -47,4 +47,21 @@ class InteractableObject {
         e.stopPropagation();
         moveToObject(this);
     }
+
+    update(data) {
+        this.setPos(data.position[0], data.position[1]);
+    }
+
+    openMenu() {
+        const menu = document.querySelector("#active-menu");
+        menu.style.display = 'initial';
+        menu.querySelector(".object-name").innerHTML = "Object";
+        menu.querySelector(".object-id").innerHTML = 0;
+        menu.querySelector(".object-type").innerHTML = "";
+        
+        const objectsContents = menu.querySelectorAll(".object-contents");
+        objectsContents.forEach((element) => {
+            element.style.display = "none";
+        });
+    }
 }

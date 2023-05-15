@@ -31,14 +31,11 @@
             <div id="connect-menu" class="menu">
                 <div id="connect-menu-content">
                     <div class="menu-title">Connect to server</div>
-                    <input id="address-input" class="menu-input" type="text" placeholder="Server address">
+                    <input id="address-input" class="menu-input" type="text" placeholder="Server address" value="localhost">
                     <input id="username-input" class="menu-input" type="text" placeholder="Username">
                     <button class="menu-button button" onclick="handleConnectClick()">Connect</button>
                 </div>
             </div>
-
-            <!--temporary solution-->
-            <div class="button" onclick="fadeOutLanding(); startGame()" style="position: absolute; top: 80%; left: 50%; width: 50px; transform: translate(-50%, -50%);">test</div>
         </div>
         <div id="game-ui">
             <div id="hud">
@@ -61,7 +58,22 @@
                         <p class="object-id"></p>
                         <p class="object-type"></p>
                     </div>
-                    <div class="object-contents"></div>
+                    <div class="contents-container">
+                        <div class="asteroid-contents object-contents">
+                            <p class="asteroid-resources object-property">Resources left: <span class="asteroid-resources-value"></span></p>
+                            <p class="asteroid-richness object-property">Richness: <span class="asteroid-richness-value"></span></p>
+                            <div class="object-actions asteroid-actions">
+                                <button class="menu-button button mine-button">Mine</button>
+                            </div>
+                        </div>
+                        <div class="station-contents object-contents">
+                            <div class="station-item-list"></div>
+                            <div class="object-actions station-actions">
+                                <!--<button class="menu-button button sell-button">Sell</button>-->
+                                <button class="menu-button button check-button">Check prices</button>
+                            </div> 
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -182,6 +182,7 @@ body {
     right: 30px;
     height: 90%;
     min-width: 300px;
+    max-height: 500px;
 }
 
 .menu-header {
@@ -231,3 +232,30 @@ body {
     cursor: pointer;
     z-index: 55;
 }
+
+.object-contents {
+    margin-top: 25px;
+}
+
+.object-property {
+    margin: 15px 0;
+}
+
+.object-actions {
+    margin-top: 40px;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+
+.object-actions .mine-button,
+.object-actions .check-button {
+    width: calc(100% - 40px);
+}
+
+/*
+.object-actions .sell-button,
+.object-actions .check-button {
+    width: calc((100% - 44px) * 0.5);
+}
+*/

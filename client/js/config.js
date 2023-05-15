@@ -13,6 +13,8 @@ const Config = {
     PLAYER_ROTATION_OFFSET: Math.PI * 0.25,
     PLAYER_MOVE_STOP_DISTANCE: 2,
     OBJECT_INTERACTION_DISTANCE: 240,
+    RICHNESS_MIN: 0,
+    RICHNESS_MAX: 1,
 
     // Graphics configuration
     BACKGROUND_COLOR: 0x272b37,
