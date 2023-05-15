@@ -1,6 +1,5 @@
 from config import config
 
-# TODO: reformat to snake case pls
 
 class Station:
     def __init__(self, name, location):
@@ -8,10 +7,10 @@ class Station:
         self.location = location
         self.current_trade_modifier = config['default_station_trade_modifier']
 
-    def buyFromPlayer(self, item):
-        worth = self.checkPrice(item)
+    def buy_from_player(self, item):
+        worth = self.check_price(item)
         return worth
 
-    def checkPrice(self, item):
+    def check_price(self, item):
         worth = item.worth * self.current_trade_modifier
         return worth

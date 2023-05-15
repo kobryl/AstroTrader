@@ -3,8 +3,8 @@ import random
 from config import config
 from item import Item
 
-# TODO: reformat to snake case pls
-def getRandomOreName():
+
+def get_random_ore_name():
     ore_names = [
         "Iron",
         "Copper",
@@ -44,18 +44,19 @@ class Asteroid:
 
     def mine(self):
         for idx, player in enumerate(self.mining_players):
-            if ((player.position[0] - self.location[0]) ** 2 + (player.position[1] - self.location[1]) ** 2) ** 0.5 < self.mining_radius and self.resources_left > 1:
+            if ((player.position[0] - self.location[0]) ** 2 + (player.position[1] - self.location[1]) ** 2)\
+                    ** 0.5 < self.mining_radius and self.resources_left > 1:
                 self.mining_players_progress[idx] += 1
                 if self.mining_players_progress[idx] == self.current_mining_modifier:
                     self.mining_players_progress[idx] = 0
-                    player.addToInventory(Item(getRandomOreName(), self.richness))
+                    player.add_to_inventory(Item(get_random_ore_name(), self.richness))
                     self.resources_left -= 1
-                player.game.sendMiningUpdate(player, self.mining_players_progress[idx]/self.current_mining_modifier)
+                player.game.send_mining_update(player, self.mining_players_progress[idx] / self.current_mining_modifier)
             else:
                 del self.mining_players[idx]
                 del self.mining_players_progress[idx]
-                player.game.sendMiningUpdate(player, 0)
+                player.game.send_mining_update(player, 0)
 
-    def addPlayer(self, player):
+    def add_player(self, player):
         self.mining_players.append(player)
         self.mining_players_progress.append(0)

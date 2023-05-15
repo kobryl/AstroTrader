@@ -2,7 +2,6 @@ import math
 
 from config import config
 
-# TODO: reformat to snake case pls
 
 class Player:
     def __init__(self, name, player_id, game):
@@ -35,15 +34,14 @@ class Player:
         if self.position == self.destination:
             self.destination = None
 
-    def setDestination(self, x, y):
+    def set_destination(self, x, y):
         self.destination = [x, y]
 
-    def setSpeed(self, speed):
+    def set_speed(self, speed):
         self.speed = speed
 
-    def addToInventory(self, item):
-        self.game.giveItem(self, item)
+    def add_to_inventory(self, item):
+        self.game.give_item(self, item)
 
-    def sendMiningNotification(self, progress):
-        self.game.sendMiningNotification(self, progress)
-
+    def send_mining_notification(self, progress):
+        self.game.send_mining_notification(self, progress)
