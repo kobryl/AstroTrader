@@ -1,5 +1,6 @@
 from config import config
 
+# TODO: reformat to snake case pls
 
 class Station:
     def __init__(self, name, location):

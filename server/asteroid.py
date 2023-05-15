@@ -3,7 +3,7 @@ import random
 from config import config
 from item import Item
 
-
+# TODO: reformat to snake case pls
 def getRandomOreName():
     ore_names = [
         "Iron",
