@@ -6,7 +6,7 @@ config = {
     'default_asteroid_mining_radius': 320,
     'market_fluctuation': 0.0001,
     'ticks_to_change_economy': 600,
-    'server_address': '185.47.65.102',
+    'server_address': 'localhost',
     'server_port': 8001,
     'ticks_to_update': 10,
     'map_size': 3072,
