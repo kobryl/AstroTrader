@@ -11,6 +11,7 @@ import asyncio
 import random
 import time
 
+# TODO: reformat to snake case pls
 
 class Game:
     def __init__(self):
