@@ -32,17 +32,26 @@ class Asteroid:
                     self.resources_left -= 1
                 player.game.send_mining_update(player, self.mining_players_progress[idx] / self.current_mining_modifier)
             else:
-                del self.mining_players[idx]
-                del self.mining_players_progress[idx]
+                self.mining_players_progress[idx] = -1
                 player.game.send_mining_update(player, 0)
+
+        new_player_list = []
+        new_progress_list = []
+        for idx, player in enumerate(self.mining_players):
+            if self.mining_players_progress[idx] != -1:
+                new_player_list.append(player)
+                new_progress_list.append(self.mining_players_progress[idx])
+        self.mining_players = new_player_list
+        self.mining_players_progress = new_progress_list
+
 
     def add_player(self, player):
         self.mining_players.append(player)
         self.mining_players_progress.append(0)
 
     def replenish_asteroid(self, delta_time):
-        self.resources_left += min(delta_time * config['asteroid_replenish_rate'],
-                                           config['max_asteroid_resources'])
+        self.resources_left += delta_time * config['asteroid_replenish_rate']
+        self.resources_left = min(self.resources_left, config['max_asteroid_resources'])
 
     def update(self, delta_time):
         self.mine()
