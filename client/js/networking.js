@@ -90,6 +90,9 @@ function sendPriceCheck(id) {
     socket.send(msg);
 }
 
+function sendEmptyMessage() {
+    socket.send("");
+}
 
 // Message receiving functions
 

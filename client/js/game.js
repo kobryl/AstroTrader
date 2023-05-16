@@ -11,6 +11,7 @@ let players = [];
 let stations = [];
 let asteroids = [];
 let playerItems = [];
+let messageCounter = 0;
 
 
 // Initialization functions
@@ -47,6 +48,11 @@ function gameLoop() {
     playerCompass.update(clientPlayer.x, clientPlayer.y);
     game.stage.pivot.x = clientPlayer.x;
     game.stage.pivot.y = clientPlayer.y;
+    messageCounter += game.ticker.deltaMS;
+    if (messageCounter >= 500) {
+        sendEmptyMessage();
+        messageCounter = 0;
+    }
 }
 
 function movePlayers() {
