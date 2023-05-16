@@ -32,7 +32,8 @@ class Asteroid:
                     self.mining_players_progress[idx] = 0
                     player.add_to_inventory(Item(get_random_ore_name(), self.richness))
                     self.resources_left -= 1
-                player.game.send_mining_update(player, self.mining_players_progress[idx] / self.current_mining_modifier)
+                if self.mining_players_progress[idx] % 10 == 0:
+                    player.game.send_mining_update(player, self.mining_players_progress[idx] / self.current_mining_modifier)
             else:
                 self.mining_players_progress[idx] = -1
                 player.game.send_mining_update(player, 0)

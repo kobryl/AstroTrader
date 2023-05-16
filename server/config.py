@@ -2,7 +2,7 @@
 config = {
     'default_speed': 250,
     'default_station_trade_modifier': 1,
-    'default_asteroid_mining_modifier': 5,
+    'default_asteroid_mining_modifier': 100,
     'default_asteroid_mining_radius': 320,
     'market_fluctuation': 0.0001,
     'ore_market_fluctuation': 0.001,
