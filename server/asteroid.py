@@ -25,6 +25,8 @@ class Asteroid:
         for idx, player in enumerate(self.mining_players):
             if ((player.position[0] - self.location[0]) ** 2 + (player.position[1] - self.location[1]) ** 2) \
                     ** 0.5 < self.mining_radius and self.resources_left > 1:
+                print(self.mining_players)
+                print(self.mining_players_progress)
                 self.mining_players_progress[idx] += 1
                 if self.mining_players_progress[idx] == self.current_mining_modifier:
                     self.mining_players_progress[idx] = 0
@@ -43,7 +45,6 @@ class Asteroid:
                 new_progress_list.append(self.mining_players_progress[idx])
         self.mining_players = new_player_list
         self.mining_players_progress = new_progress_list
-
 
     def add_player(self, player):
         self.mining_players.append(player)
