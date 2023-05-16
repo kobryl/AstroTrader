@@ -45,8 +45,8 @@ const Config = {
     COMPASS_ARROW_SCALE: 0.35,
     COMPASS_ARROW_OFFSET: 35,
     COMPASS_ARROW_ROTATION_OFFSET: Math.PI * 0.5,
-    COMPASS_FADE_DISTANCE: 640,
-    COMPASS_COMPLETE_FADE_DISTANCE: 320,
+    COMPASS_FADE_DISTANCE: Math.min(screen.width, screen.height) / 2.5,
+    COMPASS_COMPLETE_FADE_DISTANCE: Math.min(screen.width, screen.height) / 5,
     COMPASS_RADIUS: 128
 }
 

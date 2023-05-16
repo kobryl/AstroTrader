@@ -12,6 +12,7 @@ let stations = [];
 let asteroids = [];
 let playerItems = [];
 let messageCounter = 0;
+let currentlyMinedAsteroid = null;
 
 
 // Initialization functions

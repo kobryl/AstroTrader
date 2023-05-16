@@ -45,7 +45,7 @@ class Server:
         if not self.__message_queue.empty():
             message = self.__message_queue.get()
         self.__messages_lock.release()
-        if message is not None:
+        if message is not None and message[1] != "":
             print(f"Got message: {message}")
         return message
 

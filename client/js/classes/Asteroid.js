@@ -12,11 +12,16 @@ class Asteroid extends InteractableObject {
         this.name = data.name;
         this.resourcesLeft = data.resources_left;
         this.richness = data.richness;
+
+        const menu = document.querySelector("#active-menu");
+        if (menu && menu.querySelector(".object-id").innerHTML == this.id) {
+            menu.querySelector(".asteroid-resources-value").innerHTML = Math.round(this.resourcesLeft * 10) / 10;
+        }
     }
 
     openMenu() {
         super.openMenu();
-        
+
         const menu = document.querySelector("#active-menu");
         menu.querySelector(".object-name").innerHTML = this.name;
         menu.querySelector(".object-id").innerHTML = this.id;
@@ -38,5 +43,8 @@ class Asteroid extends InteractableObject {
         menu.querySelector(".asteroid-richness-value").style.color = "rgb(" + richnessColor.r + "," + richnessColor.g + "," + richnessColor.b + ")";
 
         menu.querySelector(".asteroid-actions .mine-button").onclick = () => { onMineClick(this.id); };
+        menu.querySelector(".asteroid-actions .mine-button").style.cursor = "pointer";
+        menu.querySelector(".asteroid-actions .mine-button").style.color = "white";
+        menu.querySelector(".asteroid-actions .mine-button").style.backgroundColor = "#414656";
     }
 }

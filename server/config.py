@@ -3,7 +3,7 @@ config = {
     'default_speed': 250,
     'default_station_trade_modifier': 1,
     'default_asteroid_mining_modifier': 300,
-    'default_asteroid_mining_radius': 320,
+    'default_asteroid_mining_radius': 285,
     'market_fluctuation': 0.0001,
     'ore_market_fluctuation': 0.001,
     'ticks_to_change_economy': 600,
@@ -15,7 +15,7 @@ config = {
     'player_start_y': 1536,
     'asteroid_count': 5,
     'asteroid_replenish_rate': 0.03,
-    'max_asteroid_resources': 100,
+    'max_asteroid_resources': 10,
 }
 
 ore_names = [

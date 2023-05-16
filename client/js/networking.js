@@ -34,11 +34,11 @@ function handleMessage(message) {
                 waitingForConfirmation = false;
                 assignedClientId = data.content.id;
                 console.log("Client id: " + assignedClientId);
+                setTimeout(() => { sendEmptyMessage(); }, 500);
             }
             break;
         case ServerMessages.MINING_STATUS:
             const progress = data.content.progress;
-            console.log("Mining progress: " + progress);
             updateAsteroidProgress(progress);
             break;
         case ServerMessages.CHECK_PRICE_RESPONSE:

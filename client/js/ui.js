@@ -34,7 +34,12 @@ function onCloseActiveMenuClick() {
 
 function onMineClick(id) {
     sendMine(id);
+    currentlyMinedAsteroid = id;
     document.querySelector(".asteroid-stop-disclaimer").style.display = 'initial';
+    document.querySelector(".asteroid-actions .mine-button").onclick = () => { null };
+    document.querySelector(".asteroid-actions .mine-button").style.cursor = "initial";
+    document.querySelector(".asteroid-actions .mine-button").style.color = "gray";
+    document.querySelector(".asteroid-actions .mine-button").style.backgroundColor = "#343740";
 }
 
 function onCheckClick(items) {
@@ -73,6 +78,8 @@ function updatePlayerCoordsHud(x, y) {
 }
 
 function updateAsteroidProgress(progress) {
+    let asteroidId = document.querySelector("#active-menu .object-id").innerHTML;
+    if (asteroidId != currentlyMinedAsteroid) progress = 0;
     document.querySelector(".asteroid-progress-bar-label").innerHTML = Math.round(progress * 100) + "%";
     document.querySelector(".asteroid-progress-bar-fill").style.width = (progress * 100) + "%";
 }
