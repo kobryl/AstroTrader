@@ -69,3 +69,8 @@ function updatePlayerCoordsHud(x, y) {
     document.querySelector("#player-coords-x .coords-value").innerHTML = Math.round(x);
     document.querySelector("#player-coords-y .coords-value").innerHTML = Math.round(y);
 }
+
+function updateAsteroidProgress(progress) {
+    document.querySelector(".asteroid-progress-bar-label").innerHTML = Math.round(progress * 100) + "%";
+    document.querySelector(".asteroid-progress-bar-fill").style.width = (progress * 100) + "%";
+}

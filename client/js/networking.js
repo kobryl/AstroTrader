@@ -38,7 +38,8 @@ function handleMessage(message) {
             break;
         case ServerMessages.MINING_STATUS:
             const progress = data.content.progress;
-            // todo: show progress on hud
+            updateAsteroidProgress(progress);
+            console.log(progress);
             break;
         case ServerMessages.CHECK_PRICE_RESPONSE:
             const price = data.content.price;
