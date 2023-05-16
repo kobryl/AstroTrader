@@ -80,6 +80,8 @@ class Game:
         player_id = message[0]
         message = message[1]
         message = json.loads(message)
+        if "type" not in message:
+            return
         if message["type"] == "join":
             print(message)
             self.add_player(message["content"]["player"]["name"], player_id)
