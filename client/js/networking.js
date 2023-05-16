@@ -36,6 +36,15 @@ function handleMessage(message) {
                 console.log("Client id: " + assignedClientId);
             }
             break;
+        case ServerMessages.MINING_STATUS:
+            const progress = data.content.progress;
+            // todo: show progress on hud
+            break;
+        case ServerMessages.CHECK_PRICE_RESPONSE:
+            const price = data.content.price;
+            // const multiplier = data.content.multiplier;
+            
+            break;
     }
 }
 
@@ -63,6 +72,20 @@ function sendMoveToDestination(dest) {
     const content = { player: { destination: [dest.x, dest.y] } };
     const msg = createMessage(ServerMessages.MOVE, content);
     console.log("Sending move message: " + msg);
+    socket.send(msg);
+}
+
+function sendMine(id) {
+    const content = { asteroid: id };
+    const msg = createMessage(ServerMessages.MINE, content);
+    console.log("Sending mine message: " + msg);
+    socket.send(msg);
+}
+
+function sendPriceCheck(id) {
+    const content = { item: id };
+    const msg = createMessage(ServerMessages.CHECK_PRICE, content);
+    console.log("Sending price check message: " + msg);
     socket.send(msg);
 }
 

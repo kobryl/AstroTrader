@@ -55,7 +55,11 @@ const ServerMessages = {
     JOIN: "join",
     MOVE: "move",
     UPDATE: "update",
-    CONFIRM_CONNECTION: "connection"
+    CONFIRM_CONNECTION: "connection",
+    MINE: "mine",
+    MINING_STATUS: "mine_response",
+    CHECK_PRICE: "check",
+    CHECK_PRICE_RESPONSE: "check_response"
 }
 
 

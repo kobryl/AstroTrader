@@ -86,9 +86,8 @@ class Game:
             self.get_player(player_id).destination = player["destination"]
         elif message["type"] == "mine":
             print(message)
-            asteroid_id = message["content"]["asteroid"]
+            asteroid_id = int(message["content"]["asteroid"])
             self.asteroids[asteroid_id].mining_players.append(self.get_player(player_id))
-            self.get_player(player_id).mine()
         elif message["type"] == "check":
             print(message)
             player = self.get_player(player_id)
@@ -96,7 +95,7 @@ class Game:
             station = self.station  # self.stations[message["content"]["station"]]
             value = station.check_price(item)
             update = {
-                "type": "check",
+                "type": "check_response",
                 "content": {
                     "value": str(value),
                 }
@@ -255,7 +254,7 @@ class Game:
 
     def send_mining_update(self, progress, player):
         update = {
-            "type": "mining",
+            "type": "mine_update",
             "content": {
                 "progress": progress,
             }

@@ -33,8 +33,7 @@ function onCloseActiveMenuClick() {
 }
 
 function onMineClick(id) {
-    // todo: implement
-    console.log("Mining asteroid " + id);
+    sendMine(id);    
 }
 
 function onCheckClick(items) {
