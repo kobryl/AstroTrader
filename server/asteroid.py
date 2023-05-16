@@ -1,32 +1,11 @@
 import random
 
-from config import config
+from config import config, ore_names
 from item import Item
 
 
 def get_random_ore_name():
-    ore_names = [
-        "Iron",
-        "Copper",
-        "Silver",
-        "Gold",
-        "Platinum",
-        "Diamond",
-        "Emerald",
-        "Ruby",
-        "Sapphire",
-        "Titanium",
-        "Uranium",
-        "Plutonium",
-        "Tungsten",
-        "Tin",
-        "Lead",
-        "Zinc",
-        "Nickel",
-        "Cobalt",
-        "Chromium",
-        "Bismuth",
-    ]
+    names = ore_names
     idx = random.randint(0, len(ore_names) - 1)
     return ore_names[idx]
 
@@ -44,7 +23,7 @@ class Asteroid:
 
     def mine(self):
         for idx, player in enumerate(self.mining_players):
-            if ((player.position[0] - self.location[0]) ** 2 + (player.position[1] - self.location[1]) ** 2)\
+            if ((player.position[0] - self.location[0]) ** 2 + (player.position[1] - self.location[1]) ** 2) \
                     ** 0.5 < self.mining_radius and self.resources_left > 1:
                 self.mining_players_progress[idx] += 1
                 if self.mining_players_progress[idx] == self.current_mining_modifier:
@@ -60,3 +39,11 @@ class Asteroid:
     def add_player(self, player):
         self.mining_players.append(player)
         self.mining_players_progress.append(0)
+
+    def replenish_asteroid(self, delta_time):
+        self.resources_left += min(delta_time * config['asteroid_replenish_rate'],
+                                           config['max_asteroid_resources'])
+
+    def update(self, delta_time):
+        self.mine()
+        self.replenish_asteroid(delta_time)

@@ -59,6 +59,8 @@ class Game:
             time_of_tick = time.time() - self.last_frame_time
             if time_of_tick < 0.0167:
                 time.sleep(max(0.00817 - time_of_tick, 0))
+            for asteroid in self.asteroids:
+                asteroid.update(self.delta_time)
 
     def calculate_economy(self):
         self.ticks_since_last_economy_change += 1
@@ -261,8 +263,3 @@ class Game:
         }
         json_object = json.dumps(update)
         asyncio.run(self.net_interface.send_message(player.id, json_object))
-
-    def replenish_asteroids(self):
-        for asteroid in self.asteroids:
-            asteroid.resources_left += min(self.delta_time * config['asteroid_replenish_rate'],
-                                           config['max_asteroid_resources'])

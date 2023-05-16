@@ -16,3 +16,26 @@ config = {
     'asteroid_replenish_rate': 0.03,
     'max_asteroid_resources': 100,
 }
+
+ore_names = [
+    "Iron",
+    "Copper",
+    "Silver",
+    "Gold",
+    "Platinum",
+    "Diamond",
+    "Emerald",
+    "Ruby",
+    "Sapphire",
+    "Titanium",
+    "Uranium",
+    "Plutonium",
+    "Tungsten",
+    "Tin",
+    "Lead",
+    "Zinc",
+    "Nickel",
+    "Cobalt",
+    "Chromium",
+    "Bismuth",
+]
