@@ -12,8 +12,8 @@ function createMessage(type, content) {
 
 function handleMessage(message) {
     data = JSON.parse(message);
-    console.log("Received message (" + data.type + "): ");
-    console.log(data.content);
+    // console.log("Received message (" + data.type + "): ");
+    // console.log(data.content);
 
     switch (data.type) {
         case ServerMessages.UPDATE:
@@ -38,8 +38,8 @@ function handleMessage(message) {
             break;
         case ServerMessages.MINING_STATUS:
             const progress = data.content.progress;
+            console.log("Mining progress: " + progress);
             updateAsteroidProgress(progress);
-            console.log(progress);
             break;
         case ServerMessages.CHECK_PRICE_RESPONSE:
             const price = data.content.price;

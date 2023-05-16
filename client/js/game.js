@@ -189,7 +189,7 @@ function moveToObject(object) {
         sendMoveToDestination(clientPlayer.destinationPoint);
         closeActiveMenu();
     }
-    else {
+    if (dist <= Config.OBJECT_INTERACTION_DISTANCE + Config.OBJECT_INTERACTION_DISTANCE_TOLERANCE) {
         object.openMenu();
     }
 }

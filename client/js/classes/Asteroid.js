@@ -22,7 +22,7 @@ class Asteroid extends InteractableObject {
         menu.querySelector(".object-id").innerHTML = this.id;
         menu.querySelector(".object-type").innerHTML = "Asteroid";
         menu.querySelector(".asteroid-contents").style.display = "initial";
-        menu.querySelector(".asteroid-resources-value").innerHTML = this.resourcesLeft;
+        menu.querySelector(".asteroid-resources-value").innerHTML = Math.round(this.resourcesLeft * 10) / 10;
 
         let richnessColor = {r: 255, g: 255, b: 0};
         if (this.richness < 0.5) {

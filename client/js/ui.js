@@ -33,7 +33,8 @@ function onCloseActiveMenuClick() {
 }
 
 function onMineClick(id) {
-    sendMine(id);    
+    sendMine(id);
+    document.querySelector(".asteroid-stop-disclaimer").style.display = 'initial';
 }
 
 function onCheckClick(items) {
@@ -46,6 +47,7 @@ function onCheckClick(items) {
 
 function closeActiveMenu() {
     document.querySelector("#active-menu").style.display = 'none';
+    document.querySelector(".asteroid-stop-disclaimer").style.display = 'none';
 }
 
 function fadeOutLanding() {

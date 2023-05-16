@@ -11,8 +11,9 @@ const Config = {
     PLAYER_SPEED: 250,
     PLAYER_ROTATION_SPEED: 0.025,
     PLAYER_ROTATION_OFFSET: Math.PI * 0.25,
-    PLAYER_MOVE_STOP_DISTANCE: 2,
+    PLAYER_MOVE_STOP_DISTANCE: 4,
     OBJECT_INTERACTION_DISTANCE: 240,
+    OBJECT_INTERACTION_DISTANCE_TOLERANCE: 5,
     RICHNESS_MIN: 0,
     RICHNESS_MAX: 1,
 
@@ -57,7 +58,7 @@ const ServerMessages = {
     UPDATE: "update",
     CONFIRM_CONNECTION: "connection",
     MINE: "mine",
-    MINING_STATUS: "mine_response",
+    MINING_STATUS: "mine_update",
     CHECK_PRICE: "check",
     CHECK_PRICE_RESPONSE: "check_response"
 }
