@@ -54,6 +54,7 @@ class Server:
             try:
                 print(f"Sending message to {player_id}: {message}")
                 await self.__clients[player_id].send(message)
+                print('sond ;)')
             except websockets.exceptions.ConnectionClosed:
                 print(f"Connection to {player_id} closed")
 

@@ -79,6 +79,8 @@ class Game:
             return
         player_id = message[0]
         message = message[1]
+        if message == "":
+            return
         message = json.loads(message)
         if "type" not in message:
             return

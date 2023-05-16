@@ -26,7 +26,7 @@ class Asteroid:
             if ((player.position[0] - self.location[0]) ** 2 + (player.position[1] - self.location[1]) ** 2) \
                     ** 0.5 < self.mining_radius and self.resources_left > 1:
                 self.mining_players_progress[idx] += 1
-                if self.mining_players_progress[idx] % 10 == 0:
+                if self.mining_players_progress[idx] % 30 == 0:
                     player.game.send_mining_update(player, self.mining_players_progress[idx] / self.current_mining_modifier)
                 if self.mining_players_progress[idx] == self.current_mining_modifier:
                     self.mining_players_progress[idx] = 0
