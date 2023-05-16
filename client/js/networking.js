@@ -97,6 +97,7 @@ function sendEmptyMessage() {
 // Message receiving functions
 
 function handleUpdate(content) { 
+    // todo: handle disconnects
     const players = content.players;
     for (const [id, playerData] of Object.entries(players)) {
         // console.log("Updating player: " + id + " with data: ");
@@ -118,4 +119,6 @@ function handleUpdate(content) {
         // console.log(stationData);
         updateStation(id, stationData);
     }
+
+    updatePlayerList();
 }

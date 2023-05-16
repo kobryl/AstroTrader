@@ -83,3 +83,16 @@ function updateAsteroidProgress(progress) {
     document.querySelector(".asteroid-progress-bar-label").innerHTML = Math.round(progress * 100) + "%";
     document.querySelector(".asteroid-progress-bar-fill").style.width = (progress * 100) + "%";
 }
+
+function updatePlayerList() {
+    const list = document.querySelector("#player-list-content");
+    list.innerHTML = "";
+    for (let id in players) {
+        const player = players[id];
+        const playerElement = document.createElement("div");
+        playerElement.classList.add("player-list-element");
+        if (player.id == assignedClientId) playerElement.classList.add("player-list-element-self");
+        playerElement.innerHTML = player.name;
+        list.appendChild(playerElement);
+    }
+}
