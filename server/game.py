@@ -26,7 +26,7 @@ class Game:
         self.ticks_between_economy_changes = config['ticks_to_change_economy']
         self.map_size = config['map_size']
         self.starting_position = [config['player_start_x'], config['player_start_y']]
-        self.populate_asteroids()
+
 
         # Define a new function that will start the server in a new thread
         def start_server():
@@ -37,8 +37,9 @@ class Game:
         server_thread.start()
 
         self.station = Station('PG', [self.starting_position[0] - 300, self.starting_position[1]])
-        self.structures.append(self.station.location)
-        self.structures.append(self.starting_position)
+        self.structures.append(self.station.location.copy())
+        self.structures.append(self.starting_position.copy())
+        self.populate_asteroids()
         self.delta_time = 0
         self.last_frame_time = time.time()
 
@@ -66,7 +67,7 @@ class Game:
         self.ticks_since_last_economy_change += 1
         if self.ticks_since_last_economy_change >= self.ticks_between_economy_changes:
             self.ticks_since_last_economy_change = 0
-            self.station.current_trade_modifier += (random.random() - 0.5) * config['market_fluctuation']
+            self.station.fluctuate_prices()
 
     def calculate_players(self):
         for player in self.players:
@@ -237,6 +238,8 @@ class Game:
                 valid = self.is_valid_placement([x, y])
             richness = max(random.random(), 0.3)
             self.asteroids.append(Asteroid(richness, [x, y]))
+            self.structures.append([x, y])
+            print("Asteroid " + str(i) + " spawned at " + str([x, y]))
 
     def send_outdated_price_notification(self, player):
         update = {
@@ -249,8 +252,9 @@ class Game:
         asyncio.run(self.net_interface.send_message(player.id, json_object))
 
     def is_valid_placement(self, position):
+        print(self.structures)
         for structure in self.structures:
-            if ((structure.location[0] - position[0]) ** 2 + (structure.location[1] - position[1]) ** 2) ** 0.5 < 200:
+            if ((structure[0] - position[0]) ** 2 + (structure[1] - position[1]) ** 2) ** 0.5 < 200:
                 return False
         return True
 
