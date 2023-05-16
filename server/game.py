@@ -89,7 +89,7 @@ class Game:
         elif message["type"] == "mine":
             print(message)
             asteroid_id = int(message["content"]["asteroid"])
-            self.asteroids[asteroid_id].mining_players.append(self.get_player(player_id))
+            self.asteroids[asteroid_id].add_player(self.get_player(player_id))
         elif message["type"] == "check":
             print(message)
             player = self.get_player(player_id)
@@ -254,7 +254,7 @@ class Game:
                 return False
         return True
 
-    def send_mining_update(self, progress, player):
+    def send_mining_update(self, player, progress):
         update = {
             "type": "mine_update",
             "content": {
@@ -262,4 +262,5 @@ class Game:
             }
         }
         json_object = json.dumps(update)
+        print(json_object)
         asyncio.run(self.net_interface.send_message(player.id, json_object))

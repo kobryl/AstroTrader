@@ -67,7 +67,7 @@ class Server:
         self.__messages_lock.release()
 
     async def broadcast(self, message: str) -> None:
-        print(f"Broadcasting message: {message}")
+        # print(f"Broadcasting message: {message}")
         for client in self.__clients:
             if client is not None:
                 try:

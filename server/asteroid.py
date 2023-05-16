@@ -49,6 +49,10 @@ class Asteroid:
     def add_player(self, player):
         self.mining_players.append(player)
         self.mining_players_progress.append(0)
+        print("Added player to asteroid")
+        print(self.mining_players)
+        print(self.mining_players_progress)
+        print("End of add player to asteroid")
 
     def replenish_asteroid(self, delta_time):
         self.resources_left += delta_time * config['asteroid_replenish_rate']
