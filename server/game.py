@@ -119,6 +119,8 @@ class Game:
             player = self.get_player(player_id)
             self.players.remove(player)
             print("Player " + player.name + " disconnected, player_id: " + str(player_id))
+        else:
+            pass
 
     def send_updates(self):
         if self.ticks_since_last_update < self.ticks_between_updates:
@@ -252,7 +254,6 @@ class Game:
         asyncio.run(self.net_interface.send_message(player.id, json_object))
 
     def is_valid_placement(self, position):
-        print(self.structures)
         for structure in self.structures:
             if ((structure[0] - position[0]) ** 2 + (structure[1] - position[1]) ** 2) ** 0.5 < 200:
                 return False
@@ -266,5 +267,4 @@ class Game:
             }
         }
         json_object = json.dumps(update)
-        print(json_object)
         asyncio.run(self.net_interface.send_message(player.id, json_object))
