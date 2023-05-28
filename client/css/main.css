@@ -170,8 +170,34 @@ body {
 }
 
 #player-coords .coords {
-    line-height: 1.75;
+    display: inline-block;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+#player-coords-y {
+    margin-left: 10px;
+}
+
+#player-money {
+    text-align: center;
+}
+
+#player-money-label {
+    display: inline-block;
+    font-size: 26px;
+    vertical-align: sub;
+    margin-right: 3px;
+}
+
+#player-money-value {
+    display: inline-block;
     font-size: 18px;
+}
+
+#player-items-button {
+    margin: 10px auto;
+    display: block;
 }
 
 #player-list {
@@ -183,8 +209,16 @@ body {
 
 #player-list-title {
     font-size: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
+}
+
+#player-list hr {
+    margin-bottom: 12px;
+    width: 115%;
+    left: -7.5%;
+    position: relative;
+    color: #ffffff30;
 }
 
 .player-list-element {

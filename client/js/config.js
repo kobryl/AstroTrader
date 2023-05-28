@@ -60,7 +60,9 @@ const ServerMessages = {
     MINE: "mine",
     MINING_STATUS: "mine_update",
     CHECK_PRICE: "check",
-    CHECK_PRICE_RESPONSE: "check_response"
+    CHECK_PRICE_RESPONSE: "check_response",
+    ITEM_ACTION: "item",
+    MONEY_ACTION: "money"
 }
 
 

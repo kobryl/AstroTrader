@@ -16,7 +16,7 @@ class Station:
         return worth
 
     def check_price(self, item):
-        worth = item.worth * self.current_trade_modifier * self.current_ore_modifier[item.name]
+        worth = item.value * self.current_trade_modifier * self.current_ore_modifier[item.name]
         return worth
 
     def fluctuate_prices(self):

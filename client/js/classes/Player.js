@@ -8,6 +8,7 @@ class Player {
         this.movementTargetLine = null;
         this.destinationPoint = null;
         this.interactionObject = null;
+        this.money = 0;
         this.initPlayerObjects();
         this.setPos(x, y);
     }

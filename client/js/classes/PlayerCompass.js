@@ -58,6 +58,7 @@ class PlayerCompass {
     }
 }
 
+
 class PlayerCompassObject {
     constructor(object) {
         this.object = object;

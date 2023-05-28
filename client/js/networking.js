@@ -43,8 +43,30 @@ function handleMessage(message) {
             break;
         case ServerMessages.CHECK_PRICE_RESPONSE:
             const price = data.content.price;
-            // const multiplier = data.content.multiplier;
-            
+            const id = data.content.id;
+            console.log("Price for " + id + ": " + price)
+            break;
+        case ServerMessages.ITEM_ACTION:
+            const action = data.content.action;
+            const itemId = data.content.id;
+            if (action === "add") {
+                const name = data.content.name;
+                const value = data.content.value;
+                addItem(itemId, name, value);
+            }
+            else if (action === "remove") {
+                removeItem(itemId);
+            }
+            break;
+        case ServerMessages.MONEY_ACTION:
+            const moneyAction = data.content.action;
+            const moneyAmount = data.content.amount;
+            if (moneyAction === "add") {
+                addMoney(moneyAmount);
+            }
+            else if (moneyAction === "remove") {
+                removeMoney(moneyAmount);
+            }
             break;
     }
 }
@@ -93,6 +115,7 @@ function sendPriceCheck(id) {
 function sendEmptyMessage() {
     socket.send("");
 }
+
 
 // Message receiving functions
 

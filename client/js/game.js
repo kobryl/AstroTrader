@@ -114,6 +114,26 @@ function updateStation(id, data) {
 }
 
 
+// Player inventory/money functions
+
+
+function addItem(id, name, value) {
+    playerItems.push(new Item(id, name, value));
+}
+
+function removeItem(id) {
+    playerItems = playerItems.filter(item => item.id != id);
+}
+
+function addMoney(amount) {
+    clientPlayer.money += amount;
+}
+
+function removeMoney(amount) {
+    clientPlayer.money -= amount;
+}
+
+
 // Event handlers
 
 function onClick(e) {

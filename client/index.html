@@ -16,6 +16,7 @@
     <script src="js/classes/Asteroid.js"></script>
     <script src="js/classes/Station.js"></script>
     <script src="js/classes/PlayerCompass.js"></script>
+    <script src="js/classes/Item.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/networking.js"></script>
     <script src="js/game.js"></script>
@@ -41,10 +42,16 @@
             <div id="hud">
                 <div id="player-list" class="hud-element">
                     <div id="player-list-title">Players</div>
+                    <hr />
                     <div id="player-list-content"></div>
                 </div>
-                <div id="player-info">
-                    <div id="player-coords" class="hud-element">
+                <div id="player-info" class="hud-element">
+                    <div id="player-money">
+                        <div id="player-money-label">$</div>
+                        <div id="player-money-value">0</div>
+                    </div>
+                    <button id="player-items-button" class="menu-button button" onclick="onPlayerItemsButtonClick()">Items (<span id="item-count">0</span>)</button>
+                    <div id="player-coords">
                         <div id="player-coords-x" class="coords">
                             X: <span class="coords-value">0</span>
                         </div>

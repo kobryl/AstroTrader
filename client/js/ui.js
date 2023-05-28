@@ -43,8 +43,9 @@ function onMineClick(id) {
 }
 
 function onCheckClick(items) {
-    // todo: implement
-    console.log("Checking items " + items);
+    playerItems.forEach(item => {
+        sendPriceCheck(item.id);
+    });
 }
 
 

@@ -98,13 +98,18 @@ class Game:
         elif message["type"] == "check":
             print(message)
             player = self.get_player(player_id)
-            item = player.inventory[message["content"]["item"]]
+            item = None
+            for it in player.inventory:
+                if it.id == message["content"]["item"]:
+                    item = it
+                    break
             station = self.station  # self.stations[message["content"]["station"]]
-            value = station.check_price(item)
+            price = station.check_price(item)
             update = {
                 "type": "check_response",
                 "content": {
-                    "value": str(value),
+                    "id": message["content"]["item"],
+                    "price": str(price),
                 }
             }
             json_object = json.dumps(update)
@@ -114,9 +119,9 @@ class Game:
             player = self.get_player(player_id)
             item = player.inventory[message["content"]["item"]]
             station = self.station  # self.stations[message["content"]["station"]]
-            value = station.check_price(item)
+            price = station.check_price(item)
             asked_price = message["content"]["price"]
-            if value != asked_price:
+            if price != asked_price:
                 self.send_outdated_price_notification(player)
             self.sell_item(player, item, station)
         elif message["type"] == "disconnect":
