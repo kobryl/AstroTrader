@@ -103,6 +103,8 @@ class Game:
                 if it.id == message["content"]["item"]:
                     item = it
                     break
+            if item is None:
+                return
             station = self.station  # self.stations[message["content"]["station"]]
             price = station.check_price(item)
             update = {
@@ -110,6 +112,7 @@ class Game:
                 "content": {
                     "id": message["content"]["item"],
                     "price": str(price),
+                    "modifier": str(price / item.value)
                 }
             }
             json_object = json.dumps(update)
@@ -117,12 +120,18 @@ class Game:
         elif message["type"] == "sell":
             print(message)
             player = self.get_player(player_id)
-            item = player.inventory[message["content"]["item"]]
+            item = None
+            for it in player.inventory:
+                if it.id == message["content"]["item"]:
+                    item = it
+                    break
+            if item is None:
+                return
             station = self.station  # self.stations[message["content"]["station"]]
             price = station.check_price(item)
             asked_price = message["content"]["price"]
-            if price != asked_price:
-                self.send_outdated_price_notification(player)
+            if str(price) != asked_price:
+                self.send_outdated_price_notification(player, price)
             self.sell_item(player, item, station)
         elif message["type"] == "disconnect":
             player = self.get_player(player_id)
@@ -214,7 +223,7 @@ class Game:
     def sell_item(self, player, item, station):
         value = station.buy_from_player(item)
         self.remove_item(player, item)
-        self.add_money(player, item.value)
+        self.add_money(player, value)
 
     def add_money(self, player, amount):
         player.money += amount
@@ -253,11 +262,12 @@ class Game:
             self.structures.append([x, y])
             print("Asteroid " + str(i) + " spawned at " + str([x, y]))
 
-    def send_outdated_price_notification(self, player):
+    def send_outdated_price_notification(self, player, actual_price):
         update = {
             "type": "sell",
             "content": {
                 "status": "outdated",
+                "actual_price": actual_price,
             }
         }
         json_object = json.dumps(update)

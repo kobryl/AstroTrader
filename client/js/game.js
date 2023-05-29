@@ -119,18 +119,23 @@ function updateStation(id, data) {
 
 function addItem(id, name, value) {
     playerItems.push(new Item(id, name, value));
+    updatePlayerItemList();
 }
 
 function removeItem(id) {
     playerItems = playerItems.filter(item => item.id != id);
+    updatePlayerItemList();
+    populateStationItemList();
 }
 
 function addMoney(amount) {
     clientPlayer.money += amount;
+    updatePlayerMoneyHud(clientPlayer.money);
 }
 
 function removeMoney(amount) {
     clientPlayer.money -= amount;
+    updatePlayerMoneyHud(clientPlayer.money);
 }
 
 

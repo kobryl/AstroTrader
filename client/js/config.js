@@ -62,7 +62,8 @@ const ServerMessages = {
     CHECK_PRICE: "check",
     CHECK_PRICE_RESPONSE: "check_response",
     ITEM_ACTION: "item",
-    MONEY_ACTION: "money"
+    MONEY_ACTION: "money",
+    SELL_ACTION: "sell"
 }
 
 
@@ -74,3 +75,26 @@ const rocketTexture = PIXI.Texture.from("assets/rocket.png");
 const movementTargetTexture = PIXI.Texture.from("assets/movement_target.png");
 const objectTargetTexture = PIXI.Texture.from("assets/object_target.png");
 const arrowTexture = PIXI.Texture.from("assets/arrow.png");
+
+const mineralColors = new Map([
+    ["Iron", "#758085"],
+    ["Copper", "#B78D62"],
+    ["Silver", "#A0A0A0"],
+    ["Gold", "#E6C84D"],
+    ["Platinum", "#D9D8D4"],
+    ["Diamond", "#B4EAF7"],
+    ["Emerald", "#6BBF83"],
+    ["Ruby", "#E32F77"],
+    ["Sapphire", "#1D5BB6"],
+    ["Titanium", "#909090"],
+    ["Uranium", "#57E93E"],
+    ["Plutonium", "#E53935"],
+    ["Tungsten", "#4D4D4D"],
+    ["Tin", "#BDBDBD"],
+    ["Lead", "#787878"],
+    ["Zinc", "#C9CBCD"],
+    ["Nickel", "#9B9B9B"],
+    ["Cobalt", "#0047AB"],
+    ["Chromium", "#878787"],
+    ["Bismuth", "#979797"]
+]);

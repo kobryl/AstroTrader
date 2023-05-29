@@ -42,9 +42,10 @@ function handleMessage(message) {
             updateAsteroidProgress(progress);
             break;
         case ServerMessages.CHECK_PRICE_RESPONSE:
-            const price = data.content.price;
             const id = data.content.id;
-            console.log("Price for " + id + ": " + price)
+            const price = data.content.price;
+            const modifier = data.content.modifier;
+            updateStationItemPrice(id, price, modifier);
             break;
         case ServerMessages.ITEM_ACTION:
             const action = data.content.action;
@@ -68,6 +69,15 @@ function handleMessage(message) {
                 removeMoney(moneyAmount);
             }
             break;
+        case ServerMessages.SELL_ACTION:
+            const sellStatus = data.content.status;
+            if (sellStatus === "outdated") {
+                const actualPrice = data.content.actual_price;
+                alert("The price of the sold item has changed. It was sold for " + Math.round(actualPrice * 100) / 100 + " $.");
+                playerItems.forEach(item => {
+                    sendPriceCheck(item.id);
+                });
+            }
     }
 }
 
@@ -116,6 +126,13 @@ function sendEmptyMessage() {
     socket.send("");
 }
 
+function sendSell(id, askingPrice) {
+    const content = { item: id, price: askingPrice };
+    const msg = createMessage(ServerMessages.SELL_ACTION, content);
+    console.log("Sending sell message: " + msg);
+    socket.send(msg);
+}
+
 
 // Message receiving functions
 
@@ -126,7 +143,6 @@ function handleUpdate(content) {
         // console.log("Updating player: " + id + " with data: ");
         // console.log(playerData);
         updatePlayer(id, playerData);
-        if (id == assignedClientId) updatePlayerMoney(playerData.money);
     }
 
     const asteroids = content.asteroids;

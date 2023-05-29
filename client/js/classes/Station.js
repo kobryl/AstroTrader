@@ -18,7 +18,7 @@ class Station extends InteractableObject {
         menu.querySelector(".object-id").innerHTML = this.id;
         menu.querySelector(".object-type").innerHTML = "Station";
         menu.querySelector(".station-contents").style.display = "initial";
-        menu.querySelector(".station-actions .check-button").onclick = () => { onCheckClick(null); };
-
+        menu.querySelector(".station-actions .check-button").onclick = () => { onCheckClick(); };
+        populateStationItemList();
     }
 }

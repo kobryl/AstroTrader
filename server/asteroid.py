@@ -9,6 +9,15 @@ def get_random_ore_name():
     idx = random.randint(0, len(ore_names) - 1)
     return ore_names[idx]
 
+def get_random_asteroid_name():
+    prefixes = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa']
+    suffixes = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+    prefix = random.choice(prefixes)
+    suffix = random.choice(suffixes)
+
+    return prefix + "-" + suffix
+
 
 class Asteroid:
     def __init__(self, richness, location):
@@ -18,7 +27,7 @@ class Asteroid:
         self.mining_players = []
         self.mining_players_progress = []
         self.mining_radius = config['default_asteroid_mining_radius']
-        self.name = "Asteroid"
+        self.name = get_random_asteroid_name()
         self.resources_left = config['max_asteroid_resources']
 
     def mine(self):
@@ -30,7 +39,8 @@ class Asteroid:
                     player.game.send_mining_update(player, self.mining_players_progress[idx] / self.current_mining_modifier)
                 if self.mining_players_progress[idx] == self.current_mining_modifier:
                     self.mining_players_progress[idx] = 0
-                    player.add_to_inventory(Item(get_random_ore_name(), self.richness))
+                    ore_value = self.richness * config['ore_value_multiplier'] + random.uniform(-config['ore_value_random_range'], config['ore_value_random_range'])
+                    player.add_to_inventory(Item(get_random_ore_name(), ore_value))
                     self.resources_left -= 1
             else:
                 self.mining_players_progress[idx] = -1

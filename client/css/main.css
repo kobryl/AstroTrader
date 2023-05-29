@@ -35,7 +35,8 @@ body {
 #canvas-container *,
 .menu *,
 .button,
-#menus * {
+#menus *,
+#item-list * {
     pointer-events: auto;
 }
 
@@ -167,6 +168,11 @@ body {
     position: absolute;
     bottom: 20px;
     left: 20px;
+    width: 120px;
+}
+
+#player-coords {
+    text-align: center;
 }
 
 #player-coords .coords {
@@ -205,6 +211,7 @@ body {
     top: 20px;
     left: 20px;
     overflow-y: auto;
+    min-width: 150px;
 }
 
 #player-list-title {
@@ -224,18 +231,64 @@ body {
 .player-list-element {
     margin-bottom: 10px;
     font-size: 16px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
 }
 
 .player-list-element-self {
     font-weight: bold;
 }
 
-.player-list-element-self::after {
+.player-list-element-self .player-list-element-name::after {
     content: " (You)";
 }
 
 #item-list {
     display: none;
+    position: absolute;
+    bottom: 20px;
+    left: 190px;
+    height: 200px;
+    width: 251px;
+    padding: 10px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #a6abbd40 #414656;
+}
+
+#item-list-content {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.player-list-item {
+    width: 75px;
+    height: 75px;
+    background: #414656;
+    border-radius: 10px;
+    text-align: center;
+    padding: 4px;
+    box-sizing: border-box;
+    margin: 3px;
+}
+
+.player-list-item .item-name {
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.player-list-item .item-icon {
+    width: 35px;
+    height: 35px;
+    margin: 0 auto;
+    -webkit-mask: url(../assets/ore.png) center/contain;
+    mask: url(../assets/ore.png) center/contain;
+}
+
+.player-list-item .item-value {
+    font-size: 14px;
+    margin-top: 3px;
 }
 
 #active-menu {
@@ -327,7 +380,6 @@ body {
     height: 24px;
     margin-top: 8px;
     background: rgb(65,70,86);
-    /*background: linear-gradient(180deg, rgba(65,70,86,1) 25%, rgba(73,79,92,1) 100%);*/
     border-radius: 5px;
     overflow: hidden;
     border: 1px solid #a6abbd80;
@@ -370,6 +422,67 @@ body {
     color: white;
     z-index: 50;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#station-item-list {
+    height: 345px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #a6abbd48 #a6abbd20;
+}
+
+.station-list-item {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-flow: column wrap;
+    width: 95%;
+    height: 60px;
+    border: 1px solid #a6abbd80;
+    border-radius: 5px;
+    margin-bottom: 6px;
+}
+
+.station-list-item .item-icon {
+    width: 40px;
+    height: 40px;
+    -webkit-mask: url(../assets/ore.png) center/contain;
+    mask: url(../assets/ore.png) center/contain;
+    margin-left: 8px;
+}
+
+.station-list-item .item-name {
+    font-size: 20px;
+    line-height: 3;
+    height: 100%;
+    width: 110px;
+    margin-left: -5px;
+    margin-right: -30px;
+}
+
+.station-list-item .item-value {
+    margin-bottom: 5px;
+    font-size: 16px;
+    align-self: flex-end;
+}
+
+.station-list-item .item-modifier {
+    font-size: 11px;
+    align-self: flex-end;
+}
+
+.item-sell-button {
+    padding: 0 10px;
+    margin: 10px;
+    align-self: flex-end;
+}
+
+.item-modifier-positive {
+    color: #5f8b5e;
+}
+
+.item-modifier-negative {
+    color: #8b5e5e;
 }
 
 /*
