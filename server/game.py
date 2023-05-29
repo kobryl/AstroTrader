@@ -2,7 +2,7 @@ import threading
 
 from player import Player
 from config import config
-from server.asteroid import Asteroid
+from asteroid import Asteroid
 from station import Station
 from interface import Server
 import json
@@ -152,6 +152,7 @@ class Game:
                 "position": player.position,
                 "destination": player.destination,
                 "speed": player.speed,
+                "money": player.money
             }
         for idx, asteroid in enumerate(self.asteroids):
             update["content"]["asteroids"][idx] = {

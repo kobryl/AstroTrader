@@ -126,6 +126,7 @@ function handleUpdate(content) {
         // console.log("Updating player: " + id + " with data: ");
         // console.log(playerData);
         updatePlayer(id, playerData);
+        if (id == assignedClientId) updatePlayerMoney(playerData.money);
     }
 
     const asteroids = content.asteroids;

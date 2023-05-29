@@ -40,6 +40,7 @@ class Player {
 
     update(data) {
         this.name = data.name;
+        this.money = data.money;
         this.setPos(data.position[0], data.position[1]);
         if (data.destination) {
             const point = new PIXI.Point(data.destination[0], data.destination[1]);

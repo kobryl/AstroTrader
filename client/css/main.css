@@ -234,6 +234,10 @@ body {
     content: " (You)";
 }
 
+#item-list {
+    display: none;
+}
+
 #active-menu {
     display: none;
     left: initial;

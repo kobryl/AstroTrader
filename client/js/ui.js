@@ -1,3 +1,5 @@
+let isPlayerItemListOpen = false;
+
 // Getter functions for UI elements
 
 function getPlayerName() {
@@ -48,6 +50,15 @@ function onCheckClick(items) {
     });
 }
 
+function onPlayerItemsButtonClick() {
+    if (isPlayerItemListOpen) {
+        document.querySelector("#item-list").style.display = "none";
+    }
+    else {
+        document.querySelector("#item-list").style.display = "block";
+    }
+}
+
 
 // UI drawing functions
 
@@ -76,6 +87,14 @@ function setHudVisibility(isVisible) {
 function updatePlayerCoordsHud(x, y) {
     document.querySelector("#player-coords-x .coords-value").innerHTML = Math.round(x);
     document.querySelector("#player-coords-y .coords-value").innerHTML = Math.round(y);
+}
+
+function updatePlayerMoney(amount) {
+    document.querySelector("#player-money-value").innerHTML = Math.round(amount * 100) / 100;
+}
+
+function updatePlayerItems(items) {
+
 }
 
 function updateAsteroidProgress(progress) {
