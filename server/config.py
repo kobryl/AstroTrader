@@ -4,6 +4,7 @@ config = {
     'default_station_trade_modifier': 1,
     'default_asteroid_mining_modifier': 300,
     'default_asteroid_mining_radius': 285,
+    'progress_required_to_mine': 30,
     'market_fluctuation': 0.01,
     'ore_market_fluctuation': 0.04,
     'ore_value_multiplier': 10,
@@ -18,6 +19,9 @@ config = {
     'asteroid_count': 5,
     'asteroid_replenish_rate': 0.03,
     'max_asteroid_resources': 10,
+    'ticks_per_second': 60,
+    'station_start_x': 1236,
+    'station_start_y': 1536
 }
 
 ore_names = [

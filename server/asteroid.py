@@ -1,13 +1,12 @@
 import random
-
 from config import config, ore_names
 from item import Item
 
 
 def get_random_ore_name():
-    names = ore_names
     idx = random.randint(0, len(ore_names) - 1)
     return ore_names[idx]
+
 
 def get_random_asteroid_name():
     prefixes = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa']
@@ -15,7 +14,6 @@ def get_random_asteroid_name():
 
     prefix = random.choice(prefixes)
     suffix = random.choice(suffixes)
-
     return prefix + "-" + suffix
 
 
@@ -35,11 +33,13 @@ class Asteroid:
             if ((player.position[0] - self.location[0]) ** 2 + (player.position[1] - self.location[1]) ** 2) \
                     ** 0.5 < self.mining_radius and self.resources_left > 1:
                 self.mining_players_progress[idx] += 1
-                if self.mining_players_progress[idx] % 30 == 0:
-                    player.game.send_mining_update(player, self.mining_players_progress[idx] / self.current_mining_modifier)
+                if self.mining_players_progress[idx] % config['progress_required_to_mine'] == 0:
+                    player.game.send_mining_update(player,
+                                                   self.mining_players_progress[idx] / self.current_mining_modifier)
                 if self.mining_players_progress[idx] == self.current_mining_modifier:
                     self.mining_players_progress[idx] = 0
-                    ore_value = self.richness * config['ore_value_multiplier'] + random.uniform(-config['ore_value_random_range'], config['ore_value_random_range'])
+                    ore_value = self.richness * config['ore_value_multiplier'] + random.uniform(
+                        -config['ore_value_random_range'], config['ore_value_random_range'])
                     player.add_to_inventory(Item(get_random_ore_name(), ore_value))
                     self.resources_left -= 1
             else:
@@ -61,7 +61,6 @@ class Asteroid:
         print("Added player to asteroid")
         print(self.mining_players)
         print(self.mining_players_progress)
-        print("End of add player to asteroid")
 
     def replenish_asteroid(self, delta_time):
         self.resources_left += delta_time * config['asteroid_replenish_rate']

@@ -1,5 +1,4 @@
 import math
-
 from config import config
 
 
@@ -19,7 +18,6 @@ class Player:
             return
         if self.destination is None:
             return
-        # later fix case where diagonal movement is faster than horizontal/vertical
         dx = self.destination[0] - self.position[0]
         dy = self.destination[1] - self.position[1]
         angle = math.atan2(dy, dx)

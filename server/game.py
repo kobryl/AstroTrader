@@ -1,15 +1,13 @@
 import threading
-
+import json
+import asyncio
+import random
+import time
 from player import Player
 from config import config
 from asteroid import Asteroid
 from station import Station
 from interface import Server
-import json
-import asyncio
-
-import random
-import time
 
 
 class Game:
@@ -18,7 +16,6 @@ class Game:
         self.players = []
         self.asteroids = []
         self.structures = []
-        # self.stations = []
         self.net_interface = Server()
         self.ticks_since_last_update = 0
         self.ticks_between_updates = config['ticks_to_update']
@@ -26,7 +23,6 @@ class Game:
         self.ticks_between_economy_changes = config['ticks_to_change_economy']
         self.map_size = config['map_size']
         self.starting_position = [config['player_start_x'], config['player_start_y']]
-
 
         # Define a new function that will start the server in a new thread
         def start_server():
@@ -36,7 +32,7 @@ class Game:
         server_thread = threading.Thread(target=start_server)
         server_thread.start()
 
-        self.station = Station('PG', [self.starting_position[0] - 300, self.starting_position[1]])
+        self.station = Station('PG', [config['station_start_x'], config['station_start_y']])
         self.structures.append(self.station.location.copy())
         self.structures.append(self.starting_position.copy())
         self.populate_asteroids()
@@ -58,8 +54,8 @@ class Game:
             self.calculate_players()
             self.send_updates()
             time_of_tick = time.time() - self.last_frame_time
-            if time_of_tick < 0.0167:
-                time.sleep(max(0.00817 - time_of_tick, 0))
+            if time_of_tick < 1.0 / config['ticks_per_second']:
+                time.sleep(max(1.0 / config['ticks_per_second'] / 2 - time_of_tick, 0))
             for asteroid in self.asteroids:
                 asteroid.update(self.delta_time)
 
@@ -73,6 +69,44 @@ class Game:
         for player in self.players:
             player.move(self.delta_time)
 
+    def handle_check_event(self, player_id, message):
+        player = self.get_player(player_id)
+        item = None
+        for it in player.inventory:
+            if it.id == message["content"]["item"]:
+                item = it
+                break
+        if item is None:
+            return
+        station = self.station
+        price = station.check_price(item)
+        update = {
+            "type": "check_response",
+            "content": {
+                "id": message["content"]["item"],
+                "price": str(price),
+                "modifier": str(price / item.value)
+            }
+        }
+        json_object = json.dumps(update)
+        asyncio.run(self.net_interface.broadcast(json_object))
+
+    def handle_sell_event(self, player_id, message):
+        player = self.get_player(player_id)
+        item = None
+        for it in player.inventory:
+            if it.id == message["content"]["item"]:
+                item = it
+                break
+        if item is None:
+            return
+        station = self.station
+        price = station.check_price(item)
+        asked_price = message["content"]["price"]
+        if str(price) != asked_price:
+            self.send_outdated_price_notification(player, price)
+        self.sell_item(player, item, station)
+
     def handle_updates(self):
         message = self.net_interface.get_message()
         if message is None:
@@ -82,63 +116,25 @@ class Game:
         if message == "":
             return
         message = json.loads(message)
+        print(message)
         if "type" not in message:
             return
         if message["type"] == "join":
-            print(message)
             self.add_player(message["content"]["player"]["name"], player_id)
         elif message["type"] == "move":
-            print(message)
             player = message["content"]["player"]
             self.get_player(player_id).destination = player["destination"]
         elif message["type"] == "mine":
-            print(message)
             asteroid_id = int(message["content"]["asteroid"])
             self.asteroids[asteroid_id].add_player(self.get_player(player_id))
         elif message["type"] == "check":
-            print(message)
-            player = self.get_player(player_id)
-            item = None
-            for it in player.inventory:
-                if it.id == message["content"]["item"]:
-                    item = it
-                    break
-            if item is None:
-                return
-            station = self.station  # self.stations[message["content"]["station"]]
-            price = station.check_price(item)
-            update = {
-                "type": "check_response",
-                "content": {
-                    "id": message["content"]["item"],
-                    "price": str(price),
-                    "modifier": str(price / item.value)
-                }
-            }
-            json_object = json.dumps(update)
-            asyncio.run(self.net_interface.broadcast(json_object))
+            self.handle_check_event(player_id, message)
         elif message["type"] == "sell":
-            print(message)
-            player = self.get_player(player_id)
-            item = None
-            for it in player.inventory:
-                if it.id == message["content"]["item"]:
-                    item = it
-                    break
-            if item is None:
-                return
-            station = self.station  # self.stations[message["content"]["station"]]
-            price = station.check_price(item)
-            asked_price = message["content"]["price"]
-            if str(price) != asked_price:
-                self.send_outdated_price_notification(player, price)
-            self.sell_item(player, item, station)
+            self.handle_sell_event(player_id, message)
         elif message["type"] == "disconnect":
             player = self.get_player(player_id)
             self.players.remove(player)
             print("Player " + player.name + " disconnected, player_id: " + str(player_id))
-        else:
-            pass
 
     def send_updates(self):
         if self.ticks_since_last_update < self.ticks_between_updates:

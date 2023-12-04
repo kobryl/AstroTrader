@@ -1,5 +1,4 @@
 import random
-
 from config import config, ore_names
 
 
@@ -9,7 +8,6 @@ class Station:
         self.location = location
         self.current_trade_modifier = config['default_station_trade_modifier']
         self.current_ore_modifier = dict(zip(ore_names, [1 for _ in range(len(ore_names))]))
-        print(self.current_ore_modifier)
 
     def buy_from_player(self, item):
         worth = self.check_price(item)
